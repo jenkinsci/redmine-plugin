@@ -1,10 +1,18 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   
+  <parent>
+	<groupId>org.jvnet.hudson.plugins</groupId>
+	<artifactId>plugin</artifactId>
+	<version>1.252</version>
+	<relativePath>../pom.xml</relativePath>
+  </parent>
+	
   <groupId>redmine</groupId>
   <artifactId>redmine</artifactId>
   <packaging>hpi</packaging>
-  <version>0.0.1</version>
+  <version>0.1-SNAPSHOT</version>
+  <url>http://hudson.gotdns.com/wiki/display/HUDSON/Redmine+Plugin</url>
   
   <dependencies>
     <!--
@@ -55,7 +63,7 @@
   <distributionManagement>
     <repository>
       <id>java.net-m2-repository</id>
-      <url>svn:https://svn.dev.java.net/svn/hudson/trunk/hudson/plugins/redmine/</url>
+      <url>java-net:/svn/hudson/trunk/hudson/plugins/redmine/</url>
     </repository>
   </distributionManagement>
   
@@ -156,4 +164,10 @@
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
+  
+  <scm>
+    <connection>scm:svn:https://guest@svn.dev.java.net/svn/hudson/trunk/hudson/plugins/redmine</connection>
+    <developerConnection>scm:svn:https://svn.dev.java.net/svn/hudson/trunk/hudson/plugins/redmine</developerConnection>
+    <url>https://hudson.dev.java.net/source/browse/hudson/hudson/plugins/redmine/trunk/hudson/plugins/redmine</url>
+  </scm>
 </project>

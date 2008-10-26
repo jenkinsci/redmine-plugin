@@ -1,4 +1,4 @@
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   
   <parent>
@@ -11,7 +11,7 @@
   <groupId>redmine</groupId>
   <artifactId>redmine</artifactId>
   <packaging>hpi</packaging>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <url>http://hudson.gotdns.com/wiki/display/HUDSON/Redmine+Plugin</url>
   
   <dependencies>
@@ -165,9 +165,4 @@
     </pluginRepository>
   </pluginRepositories>
   
-  <scm>
-    <connection>scm:svn:https://guest@svn.dev.java.net/svn/hudson/trunk/hudson/plugins/redmine</connection>
-    <developerConnection>scm:svn:https://svn.dev.java.net/svn/hudson/trunk/hudson/plugins/redmine</developerConnection>
-    <url>https://hudson.dev.java.net/source/browse/hudson/hudson/plugins/redmine/trunk/hudson/plugins/redmine</url>
-  </scm>
 </project>

@@ -11,7 +11,7 @@
   <groupId>redmine</groupId>
   <artifactId>redmine</artifactId>
   <packaging>hpi</packaging>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <url>http://hudson.gotdns.com/wiki/display/HUDSON/Redmine+Plugin</url>
   
   <dependencies>
@@ -165,4 +165,10 @@
     </pluginRepository>
   </pluginRepositories>
   
+
+  <scm>
+    <connection>scm:svn:https://gaooh@svn.dev.java.net/svn/hudson/tags/redmine-0.1</connection>
+    <developerConnection>scm:svn:https://svn.dev.java.net/svn/hudson/tags/redmine-0.1</developerConnection>
+    <url>https://hudson.dev.java.net/source/browse/hudson/hudson/plugins/redmine/tags/redmine-0.1</url>
+  </scm>
 </project>

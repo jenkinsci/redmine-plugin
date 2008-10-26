@@ -7,6 +7,7 @@ import hudson.scm.RepositoryBrowsers;
 /**
  * Entry point of for the Redmine plugin.
  * 
+ * @plugin
  * @author gaooh
  * @date 2008/10/26
  */

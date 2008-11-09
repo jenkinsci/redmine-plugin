@@ -55,7 +55,7 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
 
     static final LinkMarkup[] MARKUPS = new LinkMarkup[] {
         new LinkMarkup(
-            "(?:#|refs |references |IssueID )NUM",
+            "(?:#|refs |references |IssueID |fixes |closes )NUM",
             "issues/show/$1"),
         new LinkMarkup(
             "((?:[A-Z][a-z]+){2,})|wiki:ANYWORD",

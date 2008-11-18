@@ -33,20 +33,47 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
 	static final class LinkMarkup {
         private final Pattern pattern;
         private final String href;
-
+        
         LinkMarkup(String pattern, String href) {
-            pattern = NUM_PATTERN.matcher(pattern).replaceAll("(\\\\d+)"); // \\\\d becomes \\d when in the expanded text.
+            pattern = NUM_PATTERN.matcher(pattern).replaceAll("([\\\\d|,| ]+)"); // \\\\d becomes \\d when in the expanded text.
             pattern = ANYWORD_PATTERN.matcher(pattern).replaceAll("((?:\\\\w|[._-])+)");
             this.pattern = Pattern.compile(pattern);
             this.href = href;
         }
 
         void process(MarkupText text, String url) {
-            for(SubText st : text.findTokens(pattern)) {
-                st.surroundWith(
-                    "<a href='"+url+href+"'>",
-                    "</a>");
-            }
+        	for(SubText st : text.findTokens(pattern)) {
+        		String[] message = st.getText().split(" ", 2);
+        		if (message.length > 1) {
+        			String[] nums = message[1].split(",");
+        			
+        			if(nums.length > 1) {
+        				int startpos = 0;
+        				int endpos = message[0].length() + nums[0].length() + 1;
+        				st.addMarkup(startpos, endpos, "<a href='"+url+ "issues/show/"+nums[0]+"'>", "</a>");
+    				
+        				startpos = endpos + 1;
+        				endpos = startpos;
+        			
+        				for(int i = 1 ; i < nums.length ; i++) {
+        					endpos += nums[i].length() ;
+        					if(i != 1) {
+        						endpos += 1;
+        					}
+        					if(endpos >= st.getText().length()) {
+        						endpos = st.getText().length();
+        					}
+        					st.addMarkup(startpos, endpos, "<a href='"+url+"issues/show/"+nums[i].trim()+"'>", "</a>");
+        					startpos = endpos + 1;
+        					
+        				}
+        			} else {
+        				st.surroundWith("<a href='"+url+href+"'>","</a>");
+        			}
+        		} else {
+        			st.surroundWith("<a href='"+url+href+"'>","</a>");
+        		}
+    		}
         }
 
         private static final Pattern NUM_PATTERN = Pattern.compile("NUM");
@@ -54,7 +81,7 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
     }
 
     static final LinkMarkup[] MARKUPS = new LinkMarkup[] {
-        new LinkMarkup(
+    	new LinkMarkup(
             "(?:#|refs |references |IssueID |fixes |closes )NUM",
             "issues/show/$1"),
         new LinkMarkup(

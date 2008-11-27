@@ -35,7 +35,7 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
         private final String href;
         
         LinkMarkup(String pattern, String href) {
-            pattern = NUM_PATTERN.matcher(pattern).replaceAll("([\\\\d|,| ]+)"); // \\\\d becomes \\d when in the expanded text.
+            pattern = NUM_PATTERN.matcher(pattern).replaceAll("([\\\\d|,| |&]+)"); // \\\\d becomes \\d when in the expanded text.
             pattern = ANYWORD_PATTERN.matcher(pattern).replaceAll("((?:\\\\w|[._-])+)");
             this.pattern = Pattern.compile(pattern);
             this.href = href;
@@ -45,7 +45,7 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
         	for(SubText st : text.findTokens(pattern)) {
         		String[] message = st.getText().split(" ", 2);
         		if (message.length > 1) {
-        			String[] nums = message[1].split(",");
+        			String[] nums = message[1].split(",|&");
         			
         			if(nums.length > 1) {
         				int startpos = 0;

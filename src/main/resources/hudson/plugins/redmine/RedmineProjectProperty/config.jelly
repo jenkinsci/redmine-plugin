@@ -3,4 +3,7 @@
     help="/plugin/redmine/help-global.html">
     <f:textbox name="redmine.redmineWebsite" value="${instance.redmineWebsite}" />
   </f:entry>
+  <f:entry title="Redmine project name">
+    <f:textbox name="redmine.projectName" value="${instance.projectName}" />
+  </f:entry>
 </j:jelly>

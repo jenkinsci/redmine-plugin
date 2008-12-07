@@ -19,9 +19,11 @@ import org.kohsuke.stapler.StaplerRequest;
 public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 
 	public final String redmineWebsite;
-
+	
+	public final String projectName;
+	
 	@DataBoundConstructor
-	public RedmineProjectProperty(String redmineWebsite) {
+	public RedmineProjectProperty(String redmineWebsite, String projectName) {
 		if (StringUtils.isBlank(redmineWebsite)) {
 			redmineWebsite = null;
 		} else {
@@ -30,6 +32,7 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 			}
 		}
 		this.redmineWebsite = redmineWebsite;
+		this.projectName = projectName;
 	}
 
 	@Override
@@ -63,7 +66,9 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 		@Override
 		public JobProperty<?> newInstance(StaplerRequest req) throws FormException {
 			try {
-				return new RedmineProjectProperty(req.getParameter("redmine.redmineWebsite"));
+				String redmineWebSite = req.getParameter("redmine.redmineWebsite");
+				String projectName = req.getParameter("redmine.projectName");
+				return new RedmineProjectProperty(redmineWebSite, projectName);
 			} catch (IllegalArgumentException e) {
 				throw new FormException("redmine.redmineWebsite", "redmine.redmineWebSite");
 			}

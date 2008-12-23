@@ -33,15 +33,19 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 		}
         URL baseUrl = getRedmineURL(path.getLogEntry());
         String projectName = getProject(path.getLogEntry());
+        String filePath = getFilePath(path.getValue());
+        
         int revision = path.getLogEntry().getRevision();
-        return new URL(baseUrl, "repositories/diff/" + projectName + path.getValue() + "?rev=" + revision);
+        return new URL(baseUrl, "repositories/diff/" + projectName + filePath + "?rev=" + revision);
 	}
 
 	@Override
 	public URL getFileLink(Path path) throws IOException {
 		URL baseUrl = getRedmineURL(path.getLogEntry());
 		String projectName = getProject(path.getLogEntry());
-        return baseUrl == null ? null : new URL(baseUrl, "repositories/entry/" + projectName + path.getValue());
+		String filePath = getFilePath(path.getValue());
+        
+        return baseUrl == null ? null : new URL(baseUrl, "repositories/entry/" + projectName + filePath);
 	}
 
 	@Override
@@ -73,6 +77,21 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
         } else {
         	return rpp.projectName;
         }
+	}
+	
+	private String getFilePath(String fileFullPath) {
+		String[] filePaths = fileFullPath.split("/");
+        String filePath = "/";
+        if(filePaths.length > 2) {
+        	for(int i = 2 ; i < filePaths.length; i++) {
+        		filePath = filePath + filePaths[i];
+        		if(i != filePaths.length - 1) {
+        			filePath = filePath + "/";
+        		}
+        	}
+        }
+        return filePath;
+        
 	}
 	public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();
 

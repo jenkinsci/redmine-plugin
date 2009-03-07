@@ -8,6 +8,8 @@ import hudson.scm.ChangeLogSet.Entry;
 
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Annotates <a href="http://www.redmine.org/wiki/redmine/RedmineSettings#Referencing-issues-in-commit-messages">RedmineLink</a>
  * notation in changelog messages.
@@ -35,7 +37,7 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
         private final String href;
         
         LinkMarkup(String pattern, String href) {
-            pattern = NUM_PATTERN.matcher(pattern).replaceAll("([\\\\d|,| |&amp;]+)"); // \\\\d becomes \\d when in the expanded text.
+            pattern = NUM_PATTERN.matcher(pattern).replaceAll("([\\\\d|,| |&amp;|#]+)"); // \\\\d becomes \\d when in the expanded text.
             pattern = ANYWORD_PATTERN.matcher(pattern).replaceAll("((?:\\\\w|[._-])+)");
             this.pattern = Pattern.compile(pattern);
             this.href = href;
@@ -44,15 +46,21 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
         void process(MarkupText text, String url) {
         	for(SubText st : text.findTokens(pattern)) {
         		String[] message = st.getText().split(" ", 2);
+        		
         		if (message.length > 1) {
-        			String[] nums = message[1].split(",|&amp;");
+        			String[] nums = message[1].split(",|&amp;| ");
         			String splitValue = ",";
         			if(message[1].indexOf("&amp;") != -1) {
         				splitValue = "&amp;";
+        			} else if(message[1].indexOf("#") != -1) {
+        				splitValue = "#";
+        			} else if(message[1].indexOf(" ") != -1) {
+        				splitValue = " ";
         			}
         			if(nums.length > 1) {
                 		int startpos = 0;
         				int endpos = message[0].length() + nums[0].length() + 1;
+        				nums[0] = nums[0].replace("#", "");
         				st.addMarkup(startpos, endpos, "<a href='"+url+ "issues/show/"+nums[0]+"'>", "</a>");
     				
         				startpos = endpos + splitValue.length();
@@ -66,7 +74,10 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
         					if(endpos >= st.getText().length()) {
         						endpos = st.getText().length();
         					}
-        					st.addMarkup(startpos, endpos, "<a href='"+url+"issues/show/"+nums[i].trim()+"'>", "</a>");
+        					if(StringUtils.isNotBlank(nums[i])) {
+        						nums[i] = nums[i].replace("#", "");
+        						st.addMarkup(startpos, endpos, "<a href='"+url+"issues/show/"+nums[i].trim()+"'>", "</a>");
+        					}
         					startpos = endpos + splitValue.length();
         					
         				}

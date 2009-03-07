@@ -33,7 +33,7 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 		}
         URL baseUrl = getRedmineURL(path.getLogEntry());
         String projectName = getProject(path.getLogEntry());
-        String filePath = getFilePath(path.getValue());
+        String filePath = getFilePath(path.getLogEntry(), path.getValue());
         
         int revision = path.getLogEntry().getRevision();
         return new URL(baseUrl, "repositories/diff/" + projectName + filePath + "?rev=" + revision);
@@ -43,7 +43,7 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 	public URL getFileLink(Path path) throws IOException {
 		URL baseUrl = getRedmineURL(path.getLogEntry());
 		String projectName = getProject(path.getLogEntry());
-		String filePath = getFilePath(path.getValue());
+		String filePath = getFilePath(path.getLogEntry(), path.getValue());
         
         return baseUrl == null ? null : new URL(baseUrl, "repositories/entry/" + projectName + filePath);
 	}
@@ -79,14 +79,23 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
         }
 	}
 	
-	private String getFilePath(String fileFullPath) {
-		String[] filePaths = fileFullPath.split("/");
-        String filePath = "/";
-        if(filePaths.length > 2) {
-        	for(int i = 2 ; i < filePaths.length; i++) {
-        		filePath = filePath + filePaths[i];
-        		if(i != filePaths.length - 1) {
-        			filePath = filePath + "/";
+	private String getFilePath(LogEntry logEntry, String fileFullPath) {
+		AbstractProject<?,?> p = (AbstractProject<?,?>)logEntry.getParent().build.getProject();
+		RedmineProjectProperty rpp = p.getProperty(RedmineProjectProperty.class);
+		
+		String filePath = "";
+        if(rpp.redmineVersion.booleanValue()) { // 0.8.1 or after
+        	filePath = fileFullPath;
+        	
+        } else { // 0.8.0 or before
+        	String[] filePaths = fileFullPath.split("/");
+        	filePath = "/";
+        	if(filePaths.length > 2) {
+        		for(int i = 2 ; i < filePaths.length; i++) {
+        			filePath = filePath + filePaths[i];
+        			if(i != filePaths.length - 1) {
+        				filePath = filePath + "/";
+        			}
         		}
         	}
         }

@@ -22,8 +22,10 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 	
 	public final String projectName;
 	
+	public final Boolean redmineVersion;
+	
 	@DataBoundConstructor
-	public RedmineProjectProperty(String redmineWebsite, String projectName) {
+	public RedmineProjectProperty(String redmineWebsite, String projectName, Boolean redmineVersion) {
 		if (StringUtils.isBlank(redmineWebsite)) {
 			redmineWebsite = null;
 		} else {
@@ -33,6 +35,7 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 		}
 		this.redmineWebsite = redmineWebsite;
 		this.projectName = projectName;
+		this.redmineVersion = redmineVersion;
 	}
 
 	@Override
@@ -68,7 +71,14 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 			try {
 				String redmineWebSite = req.getParameter("redmine.redmineWebsite");
 				String projectName = req.getParameter("redmine.projectName");
-				return new RedmineProjectProperty(redmineWebSite, projectName);
+				String redmineVersion = req.getParameter("redmine.version");
+				
+				Boolean version = false;
+				if(StringUtils.isNotBlank(redmineVersion) && redmineVersion.equals("on")) {
+					version = true;
+				}
+				return new RedmineProjectProperty(redmineWebSite, projectName, version);
+			
 			} catch (IllegalArgumentException e) {
 				throw new FormException("redmine.redmineWebsite", "redmine.redmineWebSite");
 			}

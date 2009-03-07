@@ -6,4 +6,8 @@
   <f:entry title="Redmine project name">
     <f:textbox name="redmine.projectName" value="${instance.projectName}" />
   </f:entry>
+  <f:entry title="Redmine version">
+  	<f:optionalBlock name="redmine.version" checked="${instance.redmineVersion}" title="0.8.1 or later" />
+  </f:entry>
+  
 </j:jelly>

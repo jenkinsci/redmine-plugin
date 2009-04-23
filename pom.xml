@@ -13,5 +13,5 @@
   <artifactId>redmine</artifactId>
   <packaging>hpi</packaging>
   <version>0.8-SNAPSHOT</version>
-  <url>http://hudson.gotdns.com/wiki/display/HUDSON/Redmine+Plugin</url>
+  <url>http://wiki.hudson-ci.org/display/HUDSON/Redmine+Plugin</url>
 </project>

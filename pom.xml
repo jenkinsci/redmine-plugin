@@ -14,4 +14,12 @@
   <packaging>hpi</packaging>
   <version>0.8-SNAPSHOT</version>
   <url>http://wiki.hudson-ci.org/display/HUDSON/Redmine+Plugin</url>
+  
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>subversion</artifactId>
+      <version>1.1</version>
+    </dependency>
+  </dependencies>
 </project>

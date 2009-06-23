@@ -9,7 +9,6 @@
   </parent>
 	
   <name>Hudson Redmine plugin</name>
-  <groupId>redmine</groupId>
   <artifactId>redmine</artifactId>
   <packaging>hpi</packaging>
   <version>0.8-SNAPSHOT</version>

@@ -1,11 +1,13 @@
 package hudson.plugins.redmine;
 
+import hudson.Extension;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
 import hudson.model.Job;
 import hudson.model.JobProperty;
 import hudson.model.JobPropertyDescriptor;
 
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
@@ -48,6 +50,7 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 		return DESCRIPTOR;
 	}
 
+	@Extension
 	public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();
 
 	public static final class DescriptorImpl extends JobPropertyDescriptor {
@@ -58,6 +61,7 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 			load();
 		}
 
+		@Override
 		public boolean isApplicable(Class<? extends Job> jobType) {
 			return AbstractProject.class.isAssignableFrom(jobType);
 		}
@@ -67,7 +71,7 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 		}
 
 		@Override
-		public JobProperty<?> newInstance(StaplerRequest req) throws FormException {
+		public JobProperty<?> newInstance(StaplerRequest req, JSONObject formData) throws FormException {
 			try {
 				String redmineWebSite = req.getParameter("redmine.redmineWebsite");
 				String projectName = req.getParameter("redmine.projectName");

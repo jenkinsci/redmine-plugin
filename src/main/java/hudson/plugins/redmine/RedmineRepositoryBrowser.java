@@ -6,6 +6,7 @@ import java.net.URL;
 
 import org.kohsuke.stapler.DataBoundConstructor;
 
+import hudson.Extension;
 import hudson.model.AbstractProject;
 import hudson.model.Descriptor;
 import hudson.scm.EditType;
@@ -55,6 +56,7 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
         return baseUrl == null ? null : new URL(baseUrl, "repositories/revision/" + projectName + "/" + changeSet.getRevision());
 	}
 
+	@Override
 	public Descriptor<RepositoryBrowser<?>> getDescriptor() {
 		 return DESCRIPTOR;
 	}
@@ -102,6 +104,8 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
         return filePath;
         
 	}
+
+	@Extension
 	public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();
 
     public static final class DescriptorImpl extends Descriptor<RepositoryBrowser<?>> {

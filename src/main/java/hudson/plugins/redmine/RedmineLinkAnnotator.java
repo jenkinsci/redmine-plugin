@@ -1,5 +1,6 @@
 package hudson.plugins.redmine;
 
+import hudson.Extension;
 import hudson.MarkupText;
 import hudson.MarkupText.SubText;
 import hudson.model.AbstractBuild;
@@ -17,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
  * @author gaooh
  * @date 2008/10/13
  */
+@Extension
 public class RedmineLinkAnnotator extends ChangeLogAnnotator {
 
 	@Override

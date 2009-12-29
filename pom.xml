@@ -4,7 +4,7 @@
   <parent>
 	<groupId>org.jvnet.hudson.plugins</groupId>
 	<artifactId>plugin</artifactId>
-	<version>1.318</version>
+	<version>1.324</version>
 	<relativePath>../pom.xml</relativePath>
   </parent>
 	
@@ -13,6 +13,13 @@
   <packaging>hpi</packaging>
   <version>0.8-SNAPSHOT</version>
   <url>http://wiki.hudson-ci.org/display/HUDSON/Redmine+Plugin</url>
+
+  <developers>
+    <developer>
+      <id>gaooh</id>
+      <name>Akiko Asami</name>
+    </developer>
+  </developers>
   
   <dependencies>
     <dependency>

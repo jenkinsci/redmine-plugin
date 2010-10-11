@@ -39,8 +39,10 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
         private final String href;
         
         LinkMarkup(String pattern, String href) {
-            pattern = NUM_PATTERN.matcher(pattern).replaceAll("([\\\\d|,| |&amp;|#]+)"); // \\\\d becomes \\d when in the expanded text.
-            pattern = ANYWORD_PATTERN.matcher(pattern).replaceAll("((?:\\\\w|[._-])+)");
+            //pattern = NUM_PATTERN.matcher(pattern).replaceAll("([\\\\d|,| |&amp;|#]+)"); // \\\\d becomes \\d when in the expanded text.
+
+        	pattern = NUM_PATTERN.matcher(pattern).replaceAll("([\\\\d|,| |&amp;|#]+)"); // \\\\d becomes \\d when in the expanded text.
+        	pattern = ANYWORD_PATTERN.matcher(pattern).replaceAll("((?:\\\\w|[._-])+)");
             this.pattern = Pattern.compile(pattern);
             this.href = href;
         }
@@ -98,7 +100,7 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
 
     static final LinkMarkup[] MARKUPS = new LinkMarkup[] {
     	new LinkMarkup(
-            "(?:#|refs |references |IssueID |fixes |closes )NUM",
+            "(?:#|refs |references |IssueID |fixes |closes )#?NUM",
             "issues/show/$1"),
         new LinkMarkup(
             "((?:[A-Z][a-z]+){2,})|wiki:ANYWORD",

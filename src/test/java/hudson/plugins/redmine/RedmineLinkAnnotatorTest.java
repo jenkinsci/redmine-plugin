@@ -52,9 +52,13 @@ public class RedmineLinkAnnotatorTest extends TestCase {
 				                  "<a href='" + REDMINE_URL + "issues/show/11'>#11</a>, " +
                                   "<a href='" + REDMINE_URL + "issues/show/111'>#111</a>," +
                                   "<a href='" + REDMINE_URL + "issues/show/1111'>#1111</a>");
+        assertAnnotatedTextEquals("refs #1", 
+        						  "<a href='" + REDMINE_URL + "issues/show/1'>refs #1</a>");
         assertAnnotatedTextEquals("closes #1&amp;#11", 
                                   "<a href='" + REDMINE_URL + "issues/show/1'>closes #1</a>&amp;" +
                                   "<a href='" + REDMINE_URL + "issues/show/11'>#11</a>");
+        assertAnnotatedTextEquals("closes #1", 
+                			      "<a href='" + REDMINE_URL + "issues/show/1'>closes #1</a>");
         assertAnnotatedTextEquals("IssueID #1 #11", 
                                   "<a href='" + REDMINE_URL + "issues/show/1'>IssueID #1</a> " +
                                   "<a href='" + REDMINE_URL + "issues/show/11'>#11</a>");

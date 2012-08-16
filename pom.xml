@@ -45,7 +45,7 @@
     	<dependency>
       		<groupId>org.jvnet.hudson.plugins</groupId>
       		<artifactId>subversion</artifactId>
-      		<version>1.11</version>
+      		<version>2.0.1</version>
     	</dependency>
   	</dependencies>
   

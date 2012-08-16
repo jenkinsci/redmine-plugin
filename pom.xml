@@ -41,6 +41,14 @@
     	<developerConnection>scm:git:git@github.com:jenkinsci/redmine-plugin.git</developerConnection>
   	</scm>
   
+  	<dependencies>
+    	<dependency>
+      		<groupId>org.jvnet.hudson.plugins</groupId>
+      		<artifactId>subversion</artifactId>
+      		<version>1.11</version>
+    	</dependency>
+  	</dependencies>
+  
     <repositories>
         <repository>
             <id>repo.jenkins-ci.org</id>

@@ -1,34 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
   
-  <parent>
-	<groupId>org.jvnet.hudson.plugins</groupId>
-	<artifactId>plugin</artifactId>
-	<version>1.324</version>
-	<relativePath>../pom.xml</relativePath>
-  </parent>
+	<parent>
+		<groupId>org.jenkins-ci.plugins</groupId>
+		<artifactId>plugin</artifactId>
+		<version>1.466</version>
+  	</parent>
 	
-  <name>Hudson Redmine plugin</name>
-  <artifactId>redmine</artifactId>
-  <packaging>hpi</packaging>
-  <version>0.10-SNAPSHOT</version>
-  <url>http://wiki.hudson-ci.org/display/HUDSON/Redmine+Plugin</url>
+	<name>Hudson Redmine plugin</name>
+ 	<artifactId>redmine</artifactId>
+  	<packaging>hpi</packaging>
+  	<version>0.10-SNAPSHOT</version>
+  	<url>http://wiki.jenkins-ci.org/display/JENKINS/Redmine+Plugin</url>
 
-  <developers>
-    <developer>
-      <id>gaooh</id>
-      <name>Akiko Asami</name>
-    </developer>
-  </developers>
+ 	<developers>
+    	<developer>
+      		<id>gaooh</id>
+      		<name>Akiko Asami</name>
+    	</developer>
+ 	</developers>
   
-  <dependencies>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>subversion</artifactId>
-      <version>1.1</version>
-    </dependency>
-  </dependencies>
-
+ 	<properties>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	</properties>
+  
+ 	<build>
+    	<plugins>
+      		<plugin>
+        		<artifactId>maven-release-plugin</artifactId>
+        		<configuration>
+          			<goals>deploy</goals>
+        		</configuration>
+      		</plugin>
+    	</plugins>
+ 	</build>
+  
+  	<scm>
+    	<connection>scm:git:git://github.com/jenkinsci/redmine-plugin.git</connection>
+    	<developerConnection>scm:git:git@github.com:jenkinsci/redmine-plugin.git</developerConnection>
+  	</scm>
+  
     <repositories>
         <repository>
             <id>repo.jenkins-ci.org</id>

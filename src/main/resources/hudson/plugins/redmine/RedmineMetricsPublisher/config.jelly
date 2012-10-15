@@ -1,0 +1,22 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <f:entry title="${%Redmine URL}" field="url">
+    <f:textbox />
+  </f:entry>
+  <f:entry title="${%API Key}" field="apiKey">
+    <f:password />
+  </f:entry>
+  <f:entry title="${%Project Name}" field="projectName">
+    <f:textbox />
+  </f:entry>
+  <f:entry title="${%Target Version}" field="versions">
+    <f:textbox />
+  </f:entry>
+  <f:advanced>
+    <f:entry title="${%Ignore Ticket Tracker}" field="ignoreTicketTracker">
+      <f:textbox />
+    </f:entry>
+    <f:entry title="${%Ignore Ticket Status}" field="ignoreTicketStatus">
+      <f:textbox />
+    </f:entry>
+  </f:advanced>
+</j:jelly>

@@ -39,8 +39,6 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
         private final String href;
         
         LinkMarkup(String pattern, String href) {
-            //pattern = NUM_PATTERN.matcher(pattern).replaceAll("([\\\\d|,| |&amp;|#]+)"); // \\\\d becomes \\d when in the expanded text.
-
         	pattern = NUM_PATTERN.matcher(pattern).replaceAll("([\\\\d|,| |&amp;|#]+)"); // \\\\d becomes \\d when in the expanded text.
         	pattern = ANYWORD_PATTERN.matcher(pattern).replaceAll("((?:\\\\w|[._-])+)");
             this.pattern = Pattern.compile(pattern);
@@ -48,6 +46,7 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
         }
 
         void process(MarkupText text, String url) {
+        	
         	for(SubText st : text.findTokens(pattern)) {
         		String[] message = st.getText().split(" ", 2);
         		
@@ -61,12 +60,13 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
         			} else if(message[1].indexOf(" ") != -1) {
         				splitValue = " ";
         			}
+        			
         			if(nums.length > 1) {
                 		int startpos = 0;
         				int endpos = message[0].length() + nums[0].length() + 1;
         				nums[0] = nums[0].replace("#", "");
         				st.addMarkup(startpos, endpos, "<a href='"+url+ "issues/"+nums[0]+"'>", "</a>");
-    				
+        				
         				startpos = endpos + splitValue.length();
         				endpos = startpos;
         			
@@ -101,7 +101,7 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
     static final LinkMarkup[] MARKUPS = new LinkMarkup[] {
     	new LinkMarkup(
             "(?:#|refs |references |IssueID |fixes |closes )#?NUM",
-            "issues/show/$1"),
+            "issues/$1"),
         new LinkMarkup(
             "((?:[A-Z][a-z]+){2,})|wiki:ANYWORD",
             "wiki/$1$2"),

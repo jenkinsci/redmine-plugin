@@ -1,0 +1,8 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <l:layout>
+    <l:main-panel>
+      <h1>Ticket Metrics</h1>
+	  <img src="graph/png"/>
+    </l:main-panel>
+  </l:layout>
+</j:jelly>

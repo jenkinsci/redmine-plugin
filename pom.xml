@@ -47,6 +47,17 @@
       		<artifactId>subversion</artifactId>
       		<version>2.0.1</version>
     	</dependency>
+        <dependency>
+            <groupId>com.taskadapter</groupId>
+            <artifactId>redmine-java-api</artifactId>
+            <version>1.15</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.jmockit</groupId>
+            <artifactId>jmockit</artifactId>
+            <version>0.999.17</version>
+            <scope>test</scope>
+        </dependency>
   	</dependencies>
   
     <repositories>

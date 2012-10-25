@@ -29,9 +29,15 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
         }
 
         String url = rpp.redmineWebsite;
-        for (LinkMarkup markup : MARKUPS) {
-            markup.process(text, url);
-		}
+        boolean isVersionBefore120 = VersionUtil.isVersionBefore120(rpp.redmineVersion);
+        LinkMarkup[] markups = MARKUPS;
+        if(!isVersionBefore120) { 
+        	markups = MARKUPS_OLD;
+        } 
+        
+        for (LinkMarkup markup : markups) {
+    		markup.process(text, url);
+    	}
 	}
 
 	static final class LinkMarkup {
@@ -102,6 +108,14 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
     	new LinkMarkup(
             "(?:#|refs |references |IssueID |fixes |closes )#?NUM",
             "issues/$1"),
+        new LinkMarkup(
+            "((?:[A-Z][a-z]+){2,})|wiki:ANYWORD",
+            "wiki/$1$2"),
+    };
+    static final LinkMarkup[] MARKUPS_OLD = new LinkMarkup[] {
+    	new LinkMarkup(
+            "(?:#|refs |references |IssueID |fixes |closes )#?NUM",
+            "issues/show/$1"),
         new LinkMarkup(
             "((?:[A-Z][a-z]+){2,})|wiki:ANYWORD",
             "wiki/$1$2"),

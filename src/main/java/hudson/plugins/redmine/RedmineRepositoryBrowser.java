@@ -86,10 +86,7 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 		RedmineProjectProperty rpp = p.getProperty(RedmineProjectProperty.class);
 		
 		String filePath = "";
-        if(rpp.redmineVersion.booleanValue()) { // 0.8.1 or after
-        	filePath = fileFullPath;
-        	
-        } else { // 0.8.0 or before
+        if(VersionUtil.isVersionBefore081(rpp.redmineVersion)) {
         	String[] filePaths = fileFullPath.split("/");
         	filePath = "/";
         	if(filePaths.length > 2) {
@@ -100,11 +97,14 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
         			}
         		}
         	}
+        } else { 
+        	filePath = fileFullPath;
         }
+        
         return filePath;
         
 	}
-
+	
 	@Extension
 	public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();
 

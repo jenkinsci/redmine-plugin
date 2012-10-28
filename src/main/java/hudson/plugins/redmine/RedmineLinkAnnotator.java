@@ -21,6 +21,8 @@ import org.apache.commons.lang.StringUtils;
 @Extension
 public class RedmineLinkAnnotator extends ChangeLogAnnotator {
 
+	private static boolean isVersionBefore120;
+	
 	@Override
 	public void annotate(AbstractBuild<?, ?> build, Entry change, MarkupText text) {
 		RedmineProjectProperty rpp = build.getProject().getProperty(RedmineProjectProperty.class);
@@ -29,9 +31,9 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
         }
 
         String url = rpp.redmineWebsite;
-        boolean isVersionBefore120 = VersionUtil.isVersionBefore120(rpp.redmineVersion);
+        isVersionBefore120 = VersionUtil.isVersionBefore120(rpp.redmineVersionNumber);
         LinkMarkup[] markups = MARKUPS;
-        if(!isVersionBefore120) { 
+        if(isVersionBefore120) { 
         	markups = MARKUPS_OLD;
         } 
         
@@ -71,7 +73,7 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
                 		int startpos = 0;
         				int endpos = message[0].length() + nums[0].length() + 1;
         				nums[0] = nums[0].replace("#", "");
-        				st.addMarkup(startpos, endpos, "<a href='"+url+ "issues/"+nums[0]+"'>", "</a>");
+        				st.addMarkup(startpos, endpos, getIssuesUrl(url, nums[0]), "</a>");
         				
         				startpos = endpos + splitValue.length();
         				endpos = startpos;
@@ -86,7 +88,7 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
         					}
         					if(StringUtils.isNotBlank(nums[i])) {
         						nums[i] = nums[i].replace("#", "");
-        						st.addMarkup(startpos, endpos, "<a href='"+url+"issues/"+nums[i].trim()+"'>", "</a>");
+        						st.addMarkup(startpos, endpos, getIssuesUrl(url, nums[i]), "</a>");
         					}
         					startpos = endpos + splitValue.length();
         					
@@ -100,8 +102,16 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
     		}
         }
 
+        private String getIssuesUrl(String url, String num) {
+        	if(isVersionBefore120) {
+        		return "<a href='"+url+"issues/show/"+num.trim() +"'>";
+        	}
+        	return "<a href='"+url+"issues/"+num.trim() +"'>";
+        }
+        
         private static final Pattern NUM_PATTERN = Pattern.compile("NUM");
         private static final Pattern ANYWORD_PATTERN = Pattern.compile("ANYWORD");
+        
     }
 
     static final LinkMarkup[] MARKUPS = new LinkMarkup[] {

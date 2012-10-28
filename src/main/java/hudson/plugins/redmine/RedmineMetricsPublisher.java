@@ -22,22 +22,17 @@ import org.kohsuke.stapler.QueryParameter;
 
 public class RedmineMetricsPublisher extends Publisher {
 
-	private String url;
-	private String projectName;
 	private String apiKey;
-	private String versions;
+	private String targetVersion;
 	private String ignoreTicketTracker;
 	private String ignoreTicketStatus;
 
 	@SuppressWarnings("deprecation")
 	@DataBoundConstructor
-	public RedmineMetricsPublisher(String url, String projectName,
-			String apiKey, String versions, String ignoreTicketTracker,
+	public RedmineMetricsPublisher(String apiKey, String targetVersion, String ignoreTicketTracker,
 			String ignoreTicketStatus) {
-		this.url = url;
-		this.projectName = projectName;
 		this.apiKey = apiKey;
-		this.versions = versions;
+		this.targetVersion = targetVersion;
 		this.ignoreTicketTracker = ignoreTicketTracker;
 		this.ignoreTicketStatus = ignoreTicketStatus;
 	}
@@ -45,10 +40,15 @@ public class RedmineMetricsPublisher extends Publisher {
 	@Override
 	public boolean perform(AbstractBuild<?, ?> build, Launcher launcher,
 			BuildListener listener) throws InterruptedException, IOException {
-		PrintStream logger = listener.getLogger();
+		RedmineProjectProperty rpp = build.getProject().getProperty(RedmineProjectProperty.class);
+        if(rpp == null || rpp.redmineWebsite == null) { // not configured
+            return false; 
+        }
 
-		RedmineMetricsCalculator calculator = new RedmineMetricsCalculator(url,
-				apiKey, projectName, versions, ignoreTicketTracker,
+        PrintStream logger = listener.getLogger();
+		
+		RedmineMetricsCalculator calculator = new RedmineMetricsCalculator(rpp.redmineWebsite,
+				apiKey, rpp.projectName, targetVersion, ignoreTicketTracker,
 				ignoreTicketStatus);
 		try {
 			List<MetricsResult> metricsList = calculator.calc();
@@ -66,22 +66,14 @@ public class RedmineMetricsPublisher extends Publisher {
 		return BuildStepMonitor.NONE;
 	}
 
-	public String getUrl() {
-		return url;
-	}
-
-	public String getProjectName() {
-		return projectName;
-	}
-
 	public String getApiKey() {
 		return apiKey;
 	}
 
-	public String getVersions() {
-		return versions;
+	public String getTargetVersion() {
+		return targetVersion;
 	}
-
+	
 	public String getIgnoreTicketTracker() {
 		return ignoreTicketTracker;
 	}

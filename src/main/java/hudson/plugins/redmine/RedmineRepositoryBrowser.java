@@ -86,7 +86,7 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 		RedmineProjectProperty rpp = p.getProperty(RedmineProjectProperty.class);
 		
 		String filePath = "";
-        if(VersionUtil.isVersionBefore081(rpp.redmineVersion)) {
+        if(VersionUtil.isVersionBefore081(rpp.redmineVersionNumber)) {
         	String[] filePaths = fileFullPath.split("/");
         	filePath = "/";
         	if(filePaths.length > 2) {

@@ -11,7 +11,7 @@
 	<name>Hudson Redmine plugin</name>
  	<artifactId>redmine</artifactId>
   	<packaging>hpi</packaging>
-  	<version>0.11</version>
+  	<version>0.12-SNAPSHOT</version>
   	<url>http://wiki.jenkins-ci.org/display/JENKINS/Redmine+Plugin</url>
 
  	<developers>

@@ -33,14 +33,14 @@ public class RedmineLinkAnnotatorTest extends TestCase {
         						  "<a href='" + REDMINE_URL + "issues/11'>11</a>, " +
         						  "<a href='" + REDMINE_URL + "issues/4'>4</a>, " +
         						  "<a href='" + REDMINE_URL + "issues/4120'>4120</a>");
-        assertAnnotatedTextEquals("refs 1&amp;11&amp;111&amp;1111", 
-        						  "<a href='" + REDMINE_URL + "issues/1'>refs 1</a>&amp;amp;" +
-        						  "<a href='" + REDMINE_URL + "issues/11'>11</a>&amp;amp;" +
-        						  "<a href='" + REDMINE_URL + "issues/111'>111</a>&amp;amp;" +
+        assertAnnotatedTextEquals("refs 1&11&111&1111", 
+        						  "<a href='" + REDMINE_URL + "issues/1'>refs 1</a>&amp;" +
+        						  "<a href='" + REDMINE_URL + "issues/11'>11</a>&amp;" +
+        						  "<a href='" + REDMINE_URL + "issues/111'>111</a>&amp;" +
         						  "<a href='" + REDMINE_URL + "issues/1111'>1111</a>");
-        assertAnnotatedTextEquals("IssueID 21&amp;11&amp;100", 
-        						  "<a href='" + REDMINE_URL + "issues/21'>IssueID 21</a>&amp;amp;" +
-        						  "<a href='" + REDMINE_URL + "issues/11'>11</a>&amp;amp;" +
+        assertAnnotatedTextEquals("IssueID 21&11&100", 
+        						  "<a href='" + REDMINE_URL + "issues/21'>IssueID 21</a>&amp;" +
+        						  "<a href='" + REDMINE_URL + "issues/11'>11</a>&amp;" +
         						  "<a href='" + REDMINE_URL + "issues/100'>100</a>");
         assertAnnotatedTextEquals("refs #1,#11,#111,#1111", 
 			                      "<a href='" + REDMINE_URL + "issues/1'>refs #1</a>," +
@@ -54,8 +54,8 @@ public class RedmineLinkAnnotatorTest extends TestCase {
                                   "<a href='" + REDMINE_URL + "issues/1111'>#1111</a>");
         assertAnnotatedTextEquals("refs #1", 
         						  "<a href='" + REDMINE_URL + "issues/1'>refs #1</a>");
-        assertAnnotatedTextEquals("closes #1&amp;#11", 
-                                  "<a href='" + REDMINE_URL + "issues/1'>closes #1</a>&amp;amp;" +
+        assertAnnotatedTextEquals("closes #1&#11", 
+                                  "<a href='" + REDMINE_URL + "issues/1'>closes #1</a>&amp;" +
                                   "<a href='" + REDMINE_URL + "issues/11'>#11</a>");
         assertAnnotatedTextEquals("closes #1", 
                 			      "<a href='" + REDMINE_URL + "issues/1'>closes #1</a>");

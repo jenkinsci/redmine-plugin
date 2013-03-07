@@ -19,11 +19,11 @@ public class RedmineLinkAction implements Action {
     }
 
     public String getDisplayName() {
-        return "Redmine";
+        return "Redmine - " + prop.projectName;
     }
 
     public String getUrlName() {
-        return prop.redmineWebsite;
+        return prop.redmineWebsite + "projects/" + prop.projectName;
     }
     
 }

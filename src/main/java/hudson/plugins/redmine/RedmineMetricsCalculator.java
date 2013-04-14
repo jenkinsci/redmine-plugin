@@ -97,7 +97,7 @@ public class RedmineMetricsCalculator {
       }
       return proj;
     }
-    return null;
+    throw new RedmineException("No such project. projectName=" + projectName);
   }
 
   private List<String> getVersionsString(RedmineManager manager, Project proj)

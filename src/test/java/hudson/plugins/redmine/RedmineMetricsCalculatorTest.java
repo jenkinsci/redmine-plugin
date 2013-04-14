@@ -60,4 +60,25 @@ public class RedmineMetricsCalculatorTest {
         "http://example.com/", "APIKEY", "Example", "v1", "", "");
     assertEquals(1, rmc.calc().size());
   }
+
+  @Test(expected=MetricsException.class)
+  public void testNoSuchProject() throws MetricsException, RedmineException {
+    new NonStrictExpectations() {
+      RedmineManager redmineManager;
+      {
+        redmineManager.getProjects();
+        ArrayList<Project> projects = new ArrayList<Project>();
+        Project p = new Project();
+        p.setId(1);
+        p.setName("Example");
+        projects.add(p);
+        returns(projects);
+      }
+    };
+
+    RedmineMetricsCalculator rmc = new RedmineMetricsCalculator(
+        "http://example.com/", "APIKEY", "NoSuchProject", "v1", "", "");
+    rmc.calc();
+  }
+
 }

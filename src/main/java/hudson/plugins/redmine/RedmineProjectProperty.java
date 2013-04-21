@@ -14,18 +14,18 @@ import org.kohsuke.stapler.StaplerRequest;
 
 /**
  * Property for {@link AbstractProject} that stores the associated Redmine website URL.
- * 
+ *
  * @author gaooh
  * @date 2008/10/13
  */
 public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 
 	public final String redmineWebsite;
-	
+
 	public final String projectName;
-	
+
 	public final String redmineVersionNumber;
-	
+
 	@DataBoundConstructor
 	public RedmineProjectProperty(String redmineWebsite, String projectName, String redmineVersionNumber) {
 		if (StringUtils.isBlank(redmineWebsite)) {
@@ -42,9 +42,12 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 
 	@Override
     public Action getJobAction(AbstractProject<?,?> job) {
-        return new RedmineLinkAction(this);
+	    if (redmineWebsite == null || redmineWebsite.isEmpty())
+	        return null;
+	    else
+	        return new RedmineLinkAction(this);
     }
-	
+
 	@Override
 	public JobPropertyDescriptor getDescriptor() {
 		return DESCRIPTOR;
@@ -76,13 +79,13 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 				String redmineWebSite = req.getParameter("redmine.redmineWebsite");
 				String projectName = req.getParameter("redmine.projectName");
 				String redmineVersionNumber = req.getParameter("redmine.redmineVersionNumber");
-				
+
 				return new RedmineProjectProperty(redmineWebSite, projectName, redmineVersionNumber);
-			
+
 			} catch (IllegalArgumentException e) {
 				throw new FormException("redmine.redmineWebsite", "redmine.redmineWebSite");
 			}
 		}
-		
+
 	}
 }

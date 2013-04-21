@@ -81,6 +81,9 @@ public class RedmineSecurityRealm extends AbstractPasswordBasedSecurityRealm {
     protected UserDetails authenticate(String username, String password) throws AuthenticationException {
         RedmineManager manager = null;
         try {
+            if (webSite == null || webSite.isEmpty())
+                throw new RedmineAuthenticationException("RedmineSecurity: webSite is null");
+
             manager = new RedmineManager(webSite, username, password);
 
             List<User> users = manager.getUsers();
@@ -102,6 +105,9 @@ public class RedmineSecurityRealm extends AbstractPasswordBasedSecurityRealm {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         RedmineManager manager = null;
         try {
+            if (webSite == null || webSite.isEmpty())
+                throw new RedmineAuthenticationException("RedmineSecurity: webSite is null");
+
             manager = new RedmineManager(webSite, apiKey);
 
             List<User> users = manager.getUsers();

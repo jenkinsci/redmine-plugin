@@ -1,10 +1,77 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
     xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
 
-    <f:entry title="${%WebSite}" field="webSite">
-        <f:textbox default="http://127.0.0.1/redmine" />
+    <f:entry title="${%DBMS}" field="dbms">
+        <label>
+            <f:radio name="authenticator.dbms" value="MySQL"
+                     checked="${instance.dbms == 'MySQL' || empty instance.dbms}"
+                     onclick="$('redmine.port').value='3306'" />
+            ${%DBMS.MySQL}
+        </label>
+        <br />
+
+        <label>
+            <f:radio name="authenticator.dbms" value="PostgreSQL"
+                     checked="${instance.dbms == 'PostgreSQL'}"
+                     onclick="$('redmine.port').value='5432'" />
+            ${%DBMS.PostgreSQL}
+        </label>
+        <br />
     </f:entry>
-    <f:entry title="${%API Key}" field="apiKey">
-        <f:password />
+
+    <f:entry title="${%Server}" field="dbServer">
+        <f:textbox name="authenticator.dbServer" value="${instance.dbServer}" default="127.0.0.1" />
     </f:entry>
+    <f:entry title="${%Port}" field="port">
+        <f:textbox name="authenticator.port" value="${instance.port}" default="3306" id="redmine.port" />
+    </f:entry>
+    <f:entry title="${%Database}" field="databaseName">
+        <f:textbox name="authenticator.databaseName" value="${instance.databaseName}" default="redmine" />
+    </f:entry>
+    <f:entry title="${%Username}" field="dbUserName">
+        <f:textbox name="authenticator.dbUserName" value="${instance.dbUserName}"/>
+    </f:entry>
+    <f:entry title="${%Password}" field="dbPassword">
+        <f:password name="authenticator.dbPassword" value="${instance.dbPassword}"/>
+    </f:entry>
+
+    <f:entry title="${%RedmineVersion}" field="version">
+        <label>
+            <f:radio name="authenticator.version" value="1.2.0"
+                     checked="${instance.version == '1.2.0' || empty instance.version}"
+                     onclick="$('redmine.saltField').disabled=false" />
+            ${%Version.1_2_0}
+        </label>
+        <br />
+
+        <label>
+            <f:radio name="authenticator.version" value="1.1.3"
+                     checked="${instance.version == '1.1.3'}"
+                     onclick="$('redmine.saltField').disabled=true" />
+            ${%Version.1_1_3}
+        </label>
+        <br />
+    </f:entry>
+
+    <f:advanced>
+        <f:entry title="${%LoginTable}" field="loginTable">
+            <f:textbox name="authenticator.loginTable" value="${instance.loginTable}" default="users" />
+        </f:entry>
+        <f:entry title="${%UserField}" field="userField">
+            <f:textbox name="authenticator.userField" value="${instance.userField}" default="login" />
+        </f:entry>
+        <f:entry title="${%PassField}" field="passField">
+            <f:textbox name="authenticator.passField" value="${instance.passField}" default="hashed_password" />
+        </f:entry>
+        <f:entry title="${%SaltField}" field="saltField">
+            <j:choose>
+                <j:when test="${instance.version == '1.2.0' || empty instance.version}">
+                    <f:textbox name="authenticator.saltField" value="${instance.saltField}" default="salt" id="redmine.saltField" />
+                </j:when>
+                <j:otherwise>
+                    <f:textbox name="authenticator.saltField" value="${instance.saltField}" default="salt" id="redmine.saltField" disabled="disabled" />
+                </j:otherwise>
+            </j:choose>
+        </f:entry>
+    </f:advanced>
 </j:jelly>

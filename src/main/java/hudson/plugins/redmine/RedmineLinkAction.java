@@ -7,8 +7,8 @@ import hudson.model.Action;
  * @date 2008/10/26
  */
 public class RedmineLinkAction implements Action {
-	
-	private final RedmineProjectProperty prop;
+    
+    private final RedmineProjectProperty prop;
 
     public RedmineLinkAction(RedmineProjectProperty prop) {
         this.prop = prop;

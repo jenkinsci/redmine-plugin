@@ -94,7 +94,7 @@ public class RedmineManager {
 	public RedmineManager(String host, String apiAccessKey,
 			RedmineOptions options) {
 		this.transport = new Transport(new URIConfigurator(host, apiAccessKey),
-				options);
+				options);		
 	}
 
 	public RedmineManager(String uri, RedmineOptions options) {

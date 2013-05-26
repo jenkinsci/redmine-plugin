@@ -12,6 +12,9 @@ import hudson.util.CopyOnWriteList;
 import hudson.util.FormValidation;
 
 import net.sf.json.JSONObject;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
@@ -73,8 +76,16 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 		
 		@Override
 		public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
-			this.redmineWebsites.replaceBy(req.bindJSONToList(RedmineWebsiteConfig.class, 
-					formData.get("redmineWebsites")));
+			List<RedmineWebsiteConfig> redmineSites = req.bindJSONToList(RedmineWebsiteConfig.class, 
+					formData.get("redmineWebsites"));
+			CollectionUtils.filter(redmineSites, new Predicate() {
+				public boolean evaluate(Object object) {
+					return StringUtils.isNotBlank(((RedmineWebsiteConfig) object).baseUrl) &&
+							StringUtils.isNotBlank(((RedmineWebsiteConfig) object).versionNumber);
+				}
+			});
+			
+			this.redmineWebsites.replaceBy(redmineSites);
 			
 			save();
 			return super.configure(req, formData);

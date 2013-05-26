@@ -16,7 +16,7 @@ public class RedmineLinkAction implements Action {
 	}
 
     public String getIconFileName() {
-        return "/plugin/redmine/ruby-logo-R.png"; // quick-fix. if created the official logo, it is use.
+        return "/plugin/redmine/redmine-logo.png"; // redmine logo instead ruby
     }
 
     public String getDisplayName() {

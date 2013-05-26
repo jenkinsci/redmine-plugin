@@ -30,8 +30,8 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
             return; 
         }
 
-        String url = rpp.redmineWebsite;
-        isVersionBefore120 = VersionUtil.isVersionBefore120(rpp.redmineVersionNumber);
+        String url = rpp.redmineWebsite.baseUrl;
+        isVersionBefore120 = VersionUtil.isVersionBefore120(rpp.redmineWebsite.versionNumber);
         LinkMarkup[] markups = MARKUPS;
         if(isVersionBefore120) { 
         	markups = MARKUPS_OLD;

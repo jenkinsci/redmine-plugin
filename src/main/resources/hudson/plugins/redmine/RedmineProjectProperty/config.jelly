@@ -1,13 +1,14 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
-  <f:entry title="Redmine website"
-    help="/plugin/redmine/help-global.html">
-    <f:textbox name="redmine.redmineWebsite" value="${instance.redmineWebsite}" />
-  </f:entry>
-  <f:entry title="Redmine project name">
-    <f:textbox name="redmine.projectName" value="${instance.projectName}" />
-  </f:entry>
-  <f:entry title="Redmine version">
-  	<f:textbox name="redmine.redmineVersionNumber" value="${instance.redmineVersionNumber}" />
-  </f:entry>
-    
+	<f:optionalBlock name="redmine" title="Assign Redmine project" checked="${instance.redmineWebsite != null}">
+		<f:entry title="Redmine website">
+			<select name="redmineWebsite">
+				<j:forEach var="redmineSite" items="${descriptor.redmineWebsites}">
+					<f:option selected="${redmineSite.baseUrl==instance.redmineWebsite.baseUrl}" value="${redmineSite.baseUrl}">${redmineSite.baseUrl}</f:option>
+				</j:forEach>
+			</select>
+		</f:entry>
+		<f:entry field="projectName" title="Redmine project name">
+			<f:textbox />
+		</f:entry>
+	</f:optionalBlock>
 </j:jelly>

@@ -3,8 +3,10 @@ package hudson.plugins.redmine;
 import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
+import hudson.util.FormValidation;
 
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.QueryParameter;
 
 /**
  * @since 0.14
@@ -55,6 +57,22 @@ public class RedmineWebsiteConfig extends AbstractDescribableImpl<RedmineWebsite
         @Override
         public String getDisplayName() {
             return "";
+        }
+        
+        public FormValidation doCheckBaseUrl(@QueryParameter String baseUrl) {
+    		if (baseUrl == null || baseUrl.trim().length() < 1) {
+    			return FormValidation.error("Url can't be empty!");
+    		}
+    		   
+    		return FormValidation.ok();
+    	}
+
+        public FormValidation doCheckVersionNumber(@QueryParameter String versionNumber) {
+        	if (versionNumber == null || versionNumber.trim().length() < 1) {
+        		return FormValidation.error("Version number can't be empty!");
+        	}
+        	
+        	return FormValidation.ok();
         }
     }
 }

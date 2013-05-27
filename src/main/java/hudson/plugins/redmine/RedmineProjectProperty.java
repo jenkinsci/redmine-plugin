@@ -1,5 +1,7 @@
 package hudson.plugins.redmine;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import hudson.Extension;
@@ -27,27 +29,38 @@ import org.kohsuke.stapler.StaplerRequest;
  * @date 2008/10/13
  */
 public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
-	public final RedmineWebsiteConfig redmineWebsite;
+	private final String redmineWebsiteName;
 	public final String projectName;
 	
 	@DataBoundConstructor
-	public RedmineProjectProperty(String redmineWebsite, String projectName) {
-		RedmineWebsiteConfig foundRedmine = null;
-		for (RedmineWebsiteConfig redmineConfig :  DESCRIPTOR.getRedmineWebsites()) {
-			if (redmineConfig.baseUrl.equals(redmineWebsite)){
-				foundRedmine = redmineConfig;
-				break;
-			}
-		}
-		
-		this.redmineWebsite = foundRedmine;
+	public RedmineProjectProperty(String redmineWebsiteName, String projectName) {
+		this.redmineWebsiteName = redmineWebsiteName;
 		this.projectName = projectName;
 	}
 
 	@Override
-    public Action getJobAction(AbstractProject<?,?> job) {
-		return new RedmineLinkAction(redmineWebsite, projectName);
-    }
+	public Collection<? extends Action> getJobActions(AbstractProject<?, ?> job) {
+		if (getRedmineWebsite() != null) {
+			return Collections.singletonList(new RedmineLinkAction(getRedmineWebsite(), projectName));
+		} else {
+			return Collections.emptyList();
+		}
+	}
+	
+	public RedmineWebsiteConfig getRedmineWebsite() {
+		if (redmineWebsiteName == null) {
+			return null;
+		}
+		
+		RedmineWebsiteConfig foundRedmine = null;
+		for (RedmineWebsiteConfig redmineConfig :  DESCRIPTOR.getRedmineWebsites()) {
+			if (redmineConfig.name.equals(redmineWebsiteName)){
+				foundRedmine = redmineConfig;
+				break;
+			}
+		}
+		return foundRedmine;
+	}
 
 	@Override
 	public JobPropertyDescriptor getDescriptor() {
@@ -80,8 +93,9 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 					formData.get("redmineWebsites"));
 			CollectionUtils.filter(redmineSites, new Predicate() {
 				public boolean evaluate(Object object) {
-					return StringUtils.isNotBlank(((RedmineWebsiteConfig) object).baseUrl) &&
-							StringUtils.isNotBlank(((RedmineWebsiteConfig) object).versionNumber);
+					return StringUtils.isNotBlank(((RedmineWebsiteConfig) object).name) 
+							&& StringUtils.isNotBlank(((RedmineWebsiteConfig) object).baseUrl) 
+							&& StringUtils.isNotBlank(((RedmineWebsiteConfig) object).versionNumber);
 				}
 			});
 			
@@ -95,7 +109,7 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 		public JobProperty<?> newInstance(StaplerRequest req, JSONObject formData) throws FormException {
 			if (formData.containsKey("redmine")){
 				JSONObject redmineJson = formData.getJSONObject("redmine");
-				if (!StringUtils.isBlank(redmineJson.optString("redmineWebsite")) 
+				if (!StringUtils.isBlank(redmineJson.optString("redmineWebsiteName")) 
 						&& !StringUtils.isBlank(redmineJson.optString("projectName"))) {
 					return req.bindJSON(RedmineProjectProperty.class, redmineJson);
 				}

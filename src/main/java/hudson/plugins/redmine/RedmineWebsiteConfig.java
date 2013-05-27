@@ -14,6 +14,7 @@ import org.kohsuke.stapler.QueryParameter;
  *
  */
 public class RedmineWebsiteConfig extends AbstractDescribableImpl<RedmineWebsiteConfig> {
+	public String name;
 	public String baseUrl;
 	public String versionNumber;
 	
@@ -24,7 +25,8 @@ public class RedmineWebsiteConfig extends AbstractDescribableImpl<RedmineWebsite
 	 * @param versionNumber
 	 */
 	@DataBoundConstructor
-	public RedmineWebsiteConfig(String baseUrl, String versionNumber) {
+	public RedmineWebsiteConfig(String name, String baseUrl, String versionNumber) {
+		this.name = name;
 		this.baseUrl = baseUrl;
 		if (!this.baseUrl.endsWith("/")) {
 			this.baseUrl += '/';
@@ -32,31 +34,19 @@ public class RedmineWebsiteConfig extends AbstractDescribableImpl<RedmineWebsite
 		this.versionNumber = versionNumber;
 	}
 	
-	@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        RedmineWebsiteConfig that = (RedmineWebsiteConfig) o;
-
-        if (baseUrl != null ? !baseUrl.equals(that.baseUrl) : that.baseUrl != null) 
-        	return false;
-
-        return true;
-    }
-	
-    @Override
-    public int hashCode() {
-        int result;
-        result = (baseUrl != null ? baseUrl.hashCode() : 0);
-        return result;
-    }
-    
     @Extension
     public static class DescriptorImpl extends Descriptor<RedmineWebsiteConfig> {
         @Override
         public String getDisplayName() {
             return "";
+        }
+        
+        public FormValidation doCheckName(@QueryParameter String name) {
+        	if (name == null || name.trim().length() < 1) {
+        		return FormValidation.error("Name can't be empty!");
+        	}
+        	
+        	return FormValidation.ok();
         }
         
         public FormValidation doCheckBaseUrl(@QueryParameter String baseUrl) {

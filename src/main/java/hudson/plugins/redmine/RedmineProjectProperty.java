@@ -3,6 +3,7 @@ package hudson.plugins.redmine;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import hudson.Extension;
 import hudson.model.AbstractProject;
@@ -21,6 +22,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
+
+import com.google.common.collect.Sets;
 
 /**
  * Property for {@link AbstractProject} that stores the associated Redmine website URL.
@@ -96,6 +99,18 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 					return StringUtils.isNotBlank(((RedmineWebsiteConfig) object).name) 
 							&& StringUtils.isNotBlank(((RedmineWebsiteConfig) object).baseUrl) 
 							&& StringUtils.isNotBlank(((RedmineWebsiteConfig) object).versionNumber);
+				}
+			});
+			CollectionUtils.filter(redmineSites, new Predicate() {
+				Set<String> redmineNames = Sets.newHashSet();
+				
+				public boolean evaluate(Object object) {
+					String examinedName = ((RedmineWebsiteConfig) object).name;
+					if (redmineNames.contains(examinedName)){
+						return false;
+					}
+					redmineNames.add(examinedName);
+					return true;
 				}
 			});
 			

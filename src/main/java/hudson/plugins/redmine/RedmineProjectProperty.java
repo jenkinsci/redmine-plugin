@@ -43,11 +43,7 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 
 	@Override
 	public Collection<? extends Action> getJobActions(AbstractProject<?, ?> job) {
-		if (getRedmineWebsite() != null) {
-			return Collections.singletonList(new RedmineLinkAction(getRedmineWebsite(), projectName));
-		} else {
-			return Collections.emptyList();
-		}
+		return Collections.singletonList(new RedmineLinkAction(this));
 	}
 	
 	public RedmineWebsiteConfig getRedmineWebsite() {

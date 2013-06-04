@@ -7,24 +7,32 @@ import hudson.model.Action;
  * @date 2008/10/26
  */
 public class RedmineLinkAction implements Action {
-	private final RedmineWebsiteConfig redmineWebsite;
-	private final String projectName;
+	private final RedmineProjectProperty prop;
 
-    public RedmineLinkAction(RedmineWebsiteConfig redmineWebsite, String projectName) {
-		this.redmineWebsite = redmineWebsite;
-		this.projectName = projectName;
-	}
+    public RedmineLinkAction(RedmineProjectProperty prop) {
+        this.prop = prop;
+    }
 
     public String getIconFileName() {
-        return "/plugin/redmine/redmine-logo.png"; // redmine logo instead ruby
+    	RedmineWebsiteConfig redmineConfig = prop.getRedmineWebsite();
+		if (redmineConfig == null) {
+			return null;
+		} else {
+	        return "/plugin/redmine/redmine-logo.png"; // redmine logo instead ruby
+	    }
     }
 
     public String getDisplayName() {
-        return "Redmine - " + projectName;
+        return "Redmine - " + prop.projectName;
     }
 
     public String getUrlName() {
-        return redmineWebsite.baseUrl + "projects/" + projectName;
-    }
-    
+    	RedmineWebsiteConfig redmineConfig = prop.getRedmineWebsite();
+    	if (redmineConfig == null) {
+    		return null;
+    	} else {
+    		return redmineConfig.baseUrl + "projects/" + prop.projectName;
+    	}
+	}
+
 }

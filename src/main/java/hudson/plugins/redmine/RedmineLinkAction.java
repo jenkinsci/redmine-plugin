@@ -7,15 +7,19 @@ import hudson.model.Action;
  * @date 2008/10/26
  */
 public class RedmineLinkAction implements Action {
-    
-    private final RedmineProjectProperty prop;
+	private final RedmineProjectProperty prop;
 
     public RedmineLinkAction(RedmineProjectProperty prop) {
         this.prop = prop;
     }
 
     public String getIconFileName() {
-        return "/plugin/redmine/ruby-logo-R.png"; // quick-fix. if created the official logo, it is use.
+    	RedmineWebsiteConfig redmineConfig = prop.getRedmineWebsite();
+		if (redmineConfig == null) {
+			return null;
+		} else {
+	        return "/plugin/redmine/redmine-logo.png"; // redmine logo instead ruby
+	    }
     }
 
     public String getDisplayName() {
@@ -23,7 +27,12 @@ public class RedmineLinkAction implements Action {
     }
 
     public String getUrlName() {
-        return prop.redmineWebsite + "projects/" + prop.projectName;
-    }
-    
+    	RedmineWebsiteConfig redmineConfig = prop.getRedmineWebsite();
+    	if (redmineConfig == null) {
+    		return null;
+    	} else {
+    		return redmineConfig.baseUrl + "projects/" + prop.projectName;
+    	}
+	}
+
 }

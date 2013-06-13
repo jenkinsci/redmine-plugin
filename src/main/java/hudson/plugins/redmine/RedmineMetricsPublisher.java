@@ -41,13 +41,13 @@ public class RedmineMetricsPublisher extends Publisher {
 	public boolean perform(AbstractBuild<?, ?> build, Launcher launcher,
 			BuildListener listener) throws InterruptedException, IOException {
 		RedmineProjectProperty rpp = build.getProject().getProperty(RedmineProjectProperty.class);
-        if(rpp == null || rpp.redmineWebsite == null) { // not configured
+        if(rpp == null || rpp.getRedmineWebsite() == null) { // not configured
             return false; 
         }
 
         PrintStream logger = listener.getLogger();
 		
-		RedmineMetricsCalculator calculator = new RedmineMetricsCalculator(rpp.redmineWebsite,
+		RedmineMetricsCalculator calculator = new RedmineMetricsCalculator(rpp.getRedmineWebsite().baseUrl,
 				apiKey, rpp.projectName, targetVersion, ignoreTicketTracker,
 				ignoreTicketStatus);
 		try {

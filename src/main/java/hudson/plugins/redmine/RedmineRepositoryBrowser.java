@@ -67,7 +67,7 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
         if(rpp == null) {
         	return null;
         } else {
-        	return new URL(rpp.redmineWebsite);
+        	return new URL(rpp.getRedmineWebsite().baseUrl);
         }
     }
 
@@ -86,7 +86,7 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 		RedmineProjectProperty rpp = p.getProperty(RedmineProjectProperty.class);
 		
 		String filePath = "";
-        if(VersionUtil.isVersionBefore081(rpp.redmineVersionNumber)) {
+        if(VersionUtil.isVersionBefore081(rpp.getRedmineWebsite().versionNumber)) {
         	String[] filePaths = fileFullPath.split("/");
         	filePath = "/";
         	if(filePaths.length > 2) {

@@ -43,7 +43,7 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 	@Override
 	public URL getFileLink(Path path) throws IOException {
 		URL baseUrl = getRedmineURL(path.getLogEntry());
-		String repo = getRepo(path.getLogEntry());
+		String repo = getProject(path.getLogEntry());
 		String filePath = getFilePath(path.getLogEntry(), path.getValue());
 		int revision = path.getLogEntry().getRevision();
 
@@ -53,7 +53,7 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 	@Override
 	public URL getChangeSetLink(LogEntry changeSet) throws IOException {
 		URL baseUrl = getRedmineURL(changeSet);
-		String repo = getRepo(changeSet);
+		String repo = getProject(changeSet);
 		return baseUrl == null ? null : new URL(baseUrl, "repository" +repo+ "/revisions/" + changeSet.getRevision());
 	}
 
@@ -73,6 +73,7 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 	private URL getRedmineURL(LogEntry logEntry) throws MalformedURLException {
 		AbstractProject<?,?> p = (AbstractProject<?,?>)logEntry.getParent().build.getProject();
 		RedmineProjectProperty rpp = p.getProperty(RedmineProjectProperty.class);
+		String url;
 		if(rpp == null) {
 			url = "";
 		} else {

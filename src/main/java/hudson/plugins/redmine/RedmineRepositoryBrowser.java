@@ -33,28 +33,28 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 			return null;    
 		}
 		URL baseUrl = getRedmineURL(path.getLogEntry());
-		String projectName = getProject(path.getLogEntry());
+		String id = getRepositoryId(path.getLogEntry());
 		String filePath = getFilePath(path.getLogEntry(), path.getValue());
 
 		int revision = path.getLogEntry().getRevision();
-		return new URL(baseUrl, "repositories/diff/" + projectName + filePath + "?rev=" + revision);
+		return new URL(baseUrl, "repository" + id + "/diff/" + filePath + "?rev=" + revision);
 	}
 
 	@Override
 	public URL getFileLink(Path path) throws IOException {
 		URL baseUrl = getRedmineURL(path.getLogEntry());
-		String repo = getProject(path.getLogEntry());
+		String id = getRepositoryId(path.getLogEntry());
 		String filePath = getFilePath(path.getLogEntry(), path.getValue());
 		int revision = path.getLogEntry().getRevision();
 
-		return baseUrl == null ? null : new URL(baseUrl, "repository"+ repo + "/revisions/"+ revision+"/entry" +filePath);
+		return baseUrl == null ? null : new URL(baseUrl, "repository"+ id + "/revisions/"+ revision+"/entry" +filePath);
 	}
 
 	@Override
 	public URL getChangeSetLink(LogEntry changeSet) throws IOException {
 		URL baseUrl = getRedmineURL(changeSet);
-		String repo = getProject(changeSet);
-		return baseUrl == null ? null : new URL(baseUrl, "repository" +repo+ "/revisions/" + changeSet.getRevision());
+		String id = getRepositoryId(changeSet);
+		return baseUrl == null ? null : new URL(baseUrl, "repository" + id + "/revisions/" + changeSet.getRevision());
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 		return new URL(url);
 	}
 
-	private String getProject(LogEntry logEntry) {
+	private String getRepositoryId(LogEntry logEntry) {
 		AbstractProject<?,?> p = (AbstractProject<?,?>)logEntry.getParent().build.getProject();
 		RedmineProjectProperty rpp = p.getProperty(RedmineProjectProperty.class);
 		if(rpp == null) {

@@ -37,7 +37,7 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 		String filePath = getFilePath(path.getLogEntry(), path.getValue());
 
 		int revision = path.getLogEntry().getRevision();
-		return new URL(baseUrl, "repository" + id + "/diff/" + filePath + "?rev=" + revision);
+		return new URL(baseUrl, "repository" + id + "/diff" + filePath + "?rev=" + revision);
 	}
 
 	@Override

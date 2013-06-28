@@ -91,7 +91,7 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 		RedmineProjectProperty rpp = p.getProperty(RedmineProjectProperty.class);
 		if(rpp == null) {
 			return "";
-		} else if (rpp.projectRepoName == null){
+		} else if (rpp.projectRepoName == null || rpp.projectRepoName.isEmpty()){
 			return "";
 		} else {
 			return "/" + rpp.projectRepoName;

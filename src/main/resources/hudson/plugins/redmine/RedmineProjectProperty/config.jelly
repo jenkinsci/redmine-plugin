@@ -10,7 +10,8 @@
     help="/plugin/redmine/help-repo.html">
     <f:textbox name="redmine.projectRepoName" value="${instance.projectRepoName}" />
   </f:entry>
-  <f:entry title="Redmine version">
+  <f:entry title="Redmine version"
+    help="/plugin/redmine/help-version.html">
   	<f:textbox name="redmine.redmineVersionNumber" value="${instance.redmineVersionNumber}" />
   </f:entry>
     

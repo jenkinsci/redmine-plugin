@@ -8,7 +8,7 @@
   </f:entry>
   <f:entry title="Redmine repository identifier"
     help="/plugin/redmine/help-repo.html">
-    <f:textbox name="redmine.projectRepoName" value="${instance.projectRepoName}" />
+    <f:textbox name="redmine.repositoryId" value="${instance.repositoryId}" />
   </f:entry>
   <f:entry title="Redmine version"
     help="/plugin/redmine/help-version.html">

@@ -24,10 +24,12 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 
 	public final String projectName;
 
+	public final String repositoryId;
+
 	public final String redmineVersionNumber;
 
 	@DataBoundConstructor
-	public RedmineProjectProperty(String redmineWebsite, String projectName, String redmineVersionNumber) {
+	public RedmineProjectProperty(String redmineWebsite, String projectName, String repositoryId, String redmineVersionNumber) {
 		if (StringUtils.isBlank(redmineWebsite)) {
 			redmineWebsite = null;
 		} else {
@@ -37,16 +39,17 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 		}
 		this.redmineWebsite = redmineWebsite;
 		this.projectName = projectName;
+		this.repositoryId = repositoryId;
 		this.redmineVersionNumber = redmineVersionNumber;
 	}
 
 	@Override
-    public Action getJobAction(AbstractProject<?,?> job) {
+	public Action getJobAction(AbstractProject<?,?> job) {
 	    if (redmineWebsite == null || redmineWebsite.isEmpty())
 	        return null;
 	    else
 	        return new RedmineLinkAction(this);
-    }
+	}
 
 	@Override
 	public JobPropertyDescriptor getDescriptor() {
@@ -78,9 +81,10 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 			try {
 				String redmineWebSite = req.getParameter("redmine.redmineWebsite");
 				String projectName = req.getParameter("redmine.projectName");
+				String repositoryId = req.getParameter("redmine.repositoryId");
 				String redmineVersionNumber = req.getParameter("redmine.redmineVersionNumber");
 
-				return new RedmineProjectProperty(redmineWebSite, projectName, redmineVersionNumber);
+				return new RedmineProjectProperty(redmineWebSite, projectName, repositoryId, redmineVersionNumber);
 
 			} catch (IllegalArgumentException e) {
 				throw new FormException("redmine.redmineWebsite", "redmine.redmineWebSite");

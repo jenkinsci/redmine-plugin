@@ -20,6 +20,18 @@ public class VersionUtilTest {
 	}
 	
 	@Test
+	public void testIsVersionBefore090() {
+		assertFalse(VersionUtil.isVersionBefore090(""));
+		
+		assertTrue(VersionUtil.isVersionBefore090("0.8.0"));
+		assertTrue(VersionUtil.isVersionBefore090("0.8.7"));
+		
+		assertFalse(VersionUtil.isVersionBefore090("0.9.0"));
+		assertFalse(VersionUtil.isVersionBefore081("1.0.0"));
+		assertFalse(VersionUtil.isVersionBefore081("2.0.0"));
+	}
+	
+	@Test
 	public void testIsVersionBefore081() {
 		assertFalse(VersionUtil.isVersionBefore081(""));
 		
@@ -29,6 +41,7 @@ public class VersionUtilTest {
 		
 		assertFalse(VersionUtil.isVersionBefore081("0.8.2"));
 		assertFalse(VersionUtil.isVersionBefore081("1.2.0"));
+		assertFalse(VersionUtil.isVersionBefore081("1.8.0"));
 		assertFalse(VersionUtil.isVersionBefore081("2.0.0"));
 	}
 

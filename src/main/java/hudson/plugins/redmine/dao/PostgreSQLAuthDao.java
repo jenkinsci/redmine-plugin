@@ -73,10 +73,7 @@ public class PostgreSQLAuthDao extends AbstractAuthDao {
 
         try {
             StringBuilder query = new StringBuilder();
-            query.append("select attname ");
-            query.append("from pg_attribute ");
-            query.append("where attnum > 0 ");
-            query.append("  and attrelid = (select relfilenode from pg_class where relname = ?) ");
+            query.append("select column_name from information_schema.columns where table_name = ?");
 
             state = conn.prepareStatement(query.toString());
             state.setString(1, table);

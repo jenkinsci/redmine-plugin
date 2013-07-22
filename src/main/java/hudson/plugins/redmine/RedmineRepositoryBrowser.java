@@ -34,47 +34,28 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 		}
 		String filePath = getFilePath(path.getLogEntry(), path.getValue());
 		int revision = path.getLogEntry().getRevision();
-		if (isVersionBefore090(path.getLogEntry())) {
-			URL baseUrl = getRedmineURL(path.getLogEntry());
-			String projectName = getProject(path.getLogEntry());
+		
+		URL baseUrl = getRedmineURL(path.getLogEntry());
+		String projectName = getProject(path.getLogEntry());
         
-			return new URL(baseUrl, "repositories/diff/" + projectName + filePath + "?rev=" + revision);
-		} else {
-			URL baseUrl = getRedmineProjectURL(path.getLogEntry());
-			String id = getRepositoryId(path.getLogEntry());
-
-			return new URL(baseUrl, "repository" + id + "/diff" + filePath + "?rev=" + revision);
-		}
+		return new URL(baseUrl, "repositories/diff/" + projectName + filePath + "?rev=" + revision);
 	}
 
 	@Override
 	public URL getFileLink(Path path) throws IOException {
 		String filePath = getFilePath(path.getLogEntry(), path.getValue());
-		if (isVersionBefore090(path.getLogEntry())) {
-			URL baseUrl = getRedmineURL(path.getLogEntry());
-			String projectName = getProject(path.getLogEntry());
+		
+		URL baseUrl = getRedmineURL(path.getLogEntry());
+		String projectName = getProject(path.getLogEntry());
         
-			return baseUrl == null ? null : new URL(baseUrl, "repositories/entry/" + projectName + filePath);
-		} else {
-			URL baseUrl = getRedmineProjectURL(path.getLogEntry());
-			String id = getRepositoryId(path.getLogEntry());
-			int revision = path.getLogEntry().getRevision();
-	
-			return baseUrl == null ? null : new URL(baseUrl, "repository"+ id + "/revisions/"+ revision+"/entry" +filePath);
-		}
+		return baseUrl == null ? null : new URL(baseUrl, "repositories/entry/" + projectName + filePath);
 	}
 
 	@Override
 	public URL getChangeSetLink(LogEntry changeSet) throws IOException {
-		if (isVersionBefore090(changeSet)) {
-			URL baseUrl = getRedmineURL(changeSet);
-			String projectName = getProject(changeSet);
-			return baseUrl == null ? null : new URL(baseUrl, "repositories/revision/" + projectName + "/" + changeSet.getRevision());
-		} else {
-			URL baseUrl = getRedmineProjectURL(changeSet);
-			String id = getRepositoryId(changeSet);
-			return baseUrl == null ? null : new URL(baseUrl, "repository" + id + "/revisions/" + changeSet.getRevision());
-		}
+		URL baseUrl = getRedmineURL(changeSet);
+		String projectName = getProject(changeSet);
+		return baseUrl == null ? null : new URL(baseUrl, "repositories/revision/" + projectName + "/" + changeSet.getRevision());
 	}
 
 	@Override
@@ -86,9 +67,9 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 		AbstractProject<?,?> p = (AbstractProject<?,?>)logEntry.getParent().build.getProject();
 		RedmineProjectProperty rpp = p.getProperty(RedmineProjectProperty.class);
 		if(rpp == null) {
-		    return null;
+			return null;
 		} else {
-		    return new URL(rpp.redmineWebsite);
+			return new URL(rpp.getRedmineWebsite().baseUrl);
 		}
 	}
 
@@ -103,48 +84,12 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 	}
 
 
-	/**
-	 * The raw Redmine URL is documented with the example http://myhost/redmine.  This 
-	 * function returns the _project_'s base URL which concatenates the redmine base url 
-	 * with the "/projects/<projectName>/" (if a project name is supplied)
-	 * @param logEntry
-	 * @return
-	 * @throws MalformedURLException
-	 */
-	private URL getRedmineProjectURL(LogEntry logEntry) throws MalformedURLException {
-		AbstractProject<?,?> p = (AbstractProject<?,?>)logEntry.getParent().build.getProject();
-		RedmineProjectProperty rpp = p.getProperty(RedmineProjectProperty.class);
-		String url;
-		if(rpp == null) {
-			url = "";
-		} else {
-			// NOTE: we force the website string to have a trailing slash in the constructor
-			url = rpp.redmineWebsite;
-			if (rpp.projectName != null) {
-				url += "projects/" + rpp.projectName + "/";
-			}
-		}
-		return new URL(url);
-	}
-
-	private String getRepositoryId(LogEntry logEntry) {
-		AbstractProject<?,?> p = (AbstractProject<?,?>)logEntry.getParent().build.getProject();
-		RedmineProjectProperty rpp = p.getProperty(RedmineProjectProperty.class);
-		if(rpp == null) {
-			return "";
-		} else if (rpp.repositoryId == null || rpp.repositoryId.isEmpty()){
-			return "";
-		} else {
-			return "/" + rpp.repositoryId;
-		}
-	}
-	
 	private String getFilePath(LogEntry logEntry, String fileFullPath) {
 		AbstractProject<?,?> p = (AbstractProject<?,?>)logEntry.getParent().build.getProject();
 		RedmineProjectProperty rpp = p.getProperty(RedmineProjectProperty.class);
 
 		String filePath = "";
-		if(VersionUtil.isVersionBefore081(rpp.redmineVersionNumber)) {
+		if(VersionUtil.isVersionBefore081(rpp.getRedmineWebsite().versionNumber)) {
 			String[] filePaths = fileFullPath.split("/");
 			filePath = "/";
 			if(filePaths.length > 2) {
@@ -156,17 +101,12 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 				}
 			}
 		} else { 
-        		filePath = fileFullPath;
+			filePath = fileFullPath;
 		}
 		return filePath;
 
 	}
 
-	private boolean isVersionBefore090(LogEntry logEntry) {
-		AbstractProject<?,?> p = (AbstractProject<?,?>)logEntry.getParent().build.getProject();
-		RedmineProjectProperty rpp = p.getProperty(RedmineProjectProperty.class);
-		return VersionUtil.isVersionBefore090(rpp.redmineVersionNumber);
-	}
 
 	@Extension
 	public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();

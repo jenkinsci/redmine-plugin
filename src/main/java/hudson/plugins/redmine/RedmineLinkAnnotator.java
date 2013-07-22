@@ -26,12 +26,12 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
 	@Override
 	public void annotate(AbstractBuild<?, ?> build, Entry change, MarkupText text) {
 		RedmineProjectProperty rpp = build.getProject().getProperty(RedmineProjectProperty.class);
-        if(rpp == null || rpp.redmineWebsite == null) { // not configured
+        if(rpp == null || rpp.getRedmineWebsite() == null) { // not configured
             return; 
         }
 
-        String url = rpp.redmineWebsite;
-        isVersionBefore120 = VersionUtil.isVersionBefore120(rpp.redmineVersionNumber);
+        String url = rpp.getRedmineWebsite().baseUrl;
+        isVersionBefore120 = VersionUtil.isVersionBefore120(rpp.getRedmineWebsite().versionNumber);
         LinkMarkup[] markups = MARKUPS;
         if(isVersionBefore120) { 
         	markups = MARKUPS_OLD;

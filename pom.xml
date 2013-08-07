@@ -8,10 +8,12 @@
         <version>1.466</version>
     </parent>
 
-    <name>Hudson Redmine plugin</name>
     <artifactId>redmine</artifactId>
     <packaging>hpi</packaging>
     <version>0.15-SNAPSHOT</version>
+
+    <name>Jenkins Redmine plugin</name>
+    <description>This plugin integrates Redmine into Jenkins</description>
     <url>http://wiki.jenkins-ci.org/display/JENKINS/Redmine+Plugin</url>
 
     <developers>

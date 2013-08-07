@@ -1,60 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.jenkins-ci.plugins</groupId>
-		<artifactId>plugin</artifactId>
-		<version>1.466</version>
-  	</parent>
+    <parent>
+        <groupId>org.jenkins-ci.plugins</groupId>
+        <artifactId>plugin</artifactId>
+        <version>1.466</version>
+    </parent>
 
-	<name>Hudson Redmine plugin</name>
- 	<artifactId>redmine</artifactId>
-  	<packaging>hpi</packaging>
-  	<version>0.15-SNAPSHOT</version>
-  	<url>http://wiki.jenkins-ci.org/display/JENKINS/Redmine+Plugin</url>
+    <artifactId>redmine</artifactId>
+    <packaging>hpi</packaging>
+    <version>0.15-SNAPSHOT</version>
 
- 	<developers>
-    	<developer>
-      		<id>gaooh</id>
-      		<name>Akiko Asami</name>
-    	</developer>
- 	</developers>
+    <name>Jenkins Redmine plugin</name>
+    <description>This plugin integrates Redmine into Jenkins</description>
+    <url>http://wiki.jenkins-ci.org/display/JENKINS/Redmine+Plugin</url>
 
- 	<properties>
-    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  	</properties>
+    <developers>
+        <developer>
+            <id>gaooh</id>
+            <name>Akiko Asami</name>
+        </developer>
+    </developers>
 
- 	<build>
-    	<plugins>
-      		<plugin>
-        		<artifactId>maven-release-plugin</artifactId>
-        		<configuration>
-          			<goals>deploy</goals>
-        		</configuration>
-      		</plugin>
-			<plugin>
-				<groupId>org.jenkins-ci.tools</groupId>
-				<artifactId>maven-hpi-plugin</artifactId>
-				<extensions>true</extensions>
-				<configuration>
-					<compatibleSinceVersion>0.14</compatibleSinceVersion>
-				</configuration>
-			</plugin>
-    	</plugins>
- 	</build>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-  	<scm>
-    	<connection>scm:git:git://github.com/jenkinsci/redmine-plugin.git</connection>
-    	<developerConnection>scm:git:git@github.com:jenkinsci/redmine-plugin.git</developerConnection>
-  	</scm>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <goals>deploy</goals>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jenkins-ci.tools</groupId>
+                <artifactId>maven-hpi-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <compatibleSinceVersion>0.14</compatibleSinceVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
-  	<dependencies>
-    	<dependency>
-      		<groupId>org.jvnet.hudson.plugins</groupId>
-      		<artifactId>subversion</artifactId>
-      		<version>2.0.1</version>
-    	</dependency>
+    <scm>
+        <connection>scm:git:git://github.com/jenkinsci/redmine-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:jenkinsci/redmine-plugin.git</developerConnection>
+        <url>https://github.com/jenkinsci/redmine-plugin</url>
+    </scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jvnet.hudson.plugins</groupId>
+            <artifactId>subversion</artifactId>
+            <version>2.0.1</version>
+        </dependency>
         <dependency>
             <groupId>com.taskadapter</groupId>
             <artifactId>redmine-java-api</artifactId>
@@ -76,7 +79,7 @@
             <artifactId>postgresql</artifactId>
             <version>9.1-901-1.jdbc4</version>
         </dependency>
-  	</dependencies>
+    </dependencies>
 
     <repositories>
         <repository>
@@ -92,5 +95,3 @@
         </pluginRepository>
     </pluginRepositories>
 </project>
-
-

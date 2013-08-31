@@ -34,18 +34,11 @@ import com.google.common.collect.Sets;
 public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 	private final String redmineWebsiteName;
 	public final String projectName;
-	public final String repositoryId; 
 
 	@DataBoundConstructor
-	public RedmineProjectProperty(String redmineWebsiteName, String projectName, String repositoryId) {
+	public RedmineProjectProperty(String redmineWebsiteName, String projectName) {
 		this.redmineWebsiteName = redmineWebsiteName;
 		this.projectName = projectName;
-		this.repositoryId = repositoryId;
-	}
-	
-	@DataBoundConstructor
-	public RedmineProjectProperty(String redmineWebsiteName, String projectName) {
-		this(redmineWebsiteName, projectName, null);
 	}
 
 	@Override

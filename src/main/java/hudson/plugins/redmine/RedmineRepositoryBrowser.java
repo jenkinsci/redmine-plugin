@@ -22,11 +22,25 @@ import hudson.scm.SubversionChangeLogSet.Path;
  * @date 2008/10/26
  */
 public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
+	private final String repositoryId; 
 
 	@DataBoundConstructor
-	public RedmineRepositoryBrowser() {
+	public RedmineRepositoryBrowser(String repositoryId) {
+		this.repositoryId = repositoryId;
 	}
 	
+	/**
+	 * @deprecated use {@link #RedmineRepositoryBrowser(String)}
+	 */
+	@Deprecated
+	public RedmineRepositoryBrowser() {
+		this(null);
+	}
+	
+	public String getRepositoryId() {
+		return repositoryId;
+	}
+
 	@Override
 	public URL getDiffLink(Path path) throws IOException {
 		if(path.getEditType()!= EditType.EDIT) {
@@ -129,14 +143,10 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 	}	
 
 	private String getRepositoryId(LogEntry logEntry) {
-		AbstractProject<?,?> p = (AbstractProject<?,?>)logEntry.getParent().build.getProject();
-		RedmineProjectProperty rpp = p.getProperty(RedmineProjectProperty.class);
-		if(rpp == null) {
-			return "";
-		} else if (rpp.repositoryId == null || rpp.repositoryId.trim().length() == 0){
+		if (this.repositoryId == null || this.repositoryId.trim().length() == 0){
 			return "";
 		} else {
-			return "/" + rpp.repositoryId.trim();
+			return "/" + this.repositoryId.trim();
 		}
 	}
 

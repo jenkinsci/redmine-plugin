@@ -10,7 +10,7 @@
 
     <artifactId>redmine</artifactId>
     <packaging>hpi</packaging>
-    <version>0.15-SNAPSHOT</version>
+    <version>0.15</version>
 
     <name>Jenkins Redmine plugin</name>
     <description>This plugin integrates Redmine into Jenkins</description>

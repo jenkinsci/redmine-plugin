@@ -11,6 +11,9 @@
 			<f:entry field="projectName" title="${%Redmine project name}">
 				<f:textbox />
 			</f:entry>
+			<f:entry field="repositoryId" title="${%Redmine repository identifier}" help="/plugin/redmine/help-repo.html">
+				<f:textbox />
+			</f:entry> 
 		</j:if>
 	</f:optionalBlock>
 </j:jelly>

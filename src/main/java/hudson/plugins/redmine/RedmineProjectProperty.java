@@ -93,8 +93,7 @@ public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 			CollectionUtils.filter(redmineSites, new Predicate() {
 				public boolean evaluate(Object object) {
 					return StringUtils.isNotBlank(((RedmineWebsiteConfig) object).name) 
-							&& StringUtils.isNotBlank(((RedmineWebsiteConfig) object).baseUrl) 
-							&& StringUtils.isNotBlank(((RedmineWebsiteConfig) object).versionNumber);
+							&& StringUtils.isNotBlank(((RedmineWebsiteConfig) object).baseUrl);
 				}
 			});
 			CollectionUtils.filter(redmineSites, new Predicate() {

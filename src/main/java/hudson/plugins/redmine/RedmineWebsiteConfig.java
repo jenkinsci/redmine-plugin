@@ -59,7 +59,11 @@ public class RedmineWebsiteConfig extends AbstractDescribableImpl<RedmineWebsite
 
         public FormValidation doCheckVersionNumber(@QueryParameter String versionNumber) {
         	if (versionNumber == null || versionNumber.trim().length() < 1) {
-        		return FormValidation.error("Version number can't be empty!");
+        		return FormValidation.ok();
+        	}
+        	
+        	if (versionNumber.split("\\.").length != 3) {
+        		return FormValidation.error("Version number must be X.Y.Z form!");
         	}
         	
         	return FormValidation.ok();

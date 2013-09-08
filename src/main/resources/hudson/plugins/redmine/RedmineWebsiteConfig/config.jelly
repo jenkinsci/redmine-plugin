@@ -5,7 +5,7 @@
 	<f:entry field="baseUrl" title="${%Base url}">
 		<f:textbox />
 	</f:entry>
-	<f:entry field="versionNumber" title="${%Version number}">
+	<f:entry field="versionNumber" title="${%Version number}" help="/plugin/redmine/help-version.html">
 		<f:textbox />
 	</f:entry>
 	

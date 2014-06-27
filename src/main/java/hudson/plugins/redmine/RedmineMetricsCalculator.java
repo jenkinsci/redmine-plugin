@@ -1,19 +1,16 @@
 package hudson.plugins.redmine;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.apache.commons.httpclient.protocol.Protocol;
-import org.apache.commons.httpclient.protocol.SSLProtocolSocketFactory;
-import org.apache.commons.lang.ArrayUtils;
 import com.taskadapter.redmineapi.RedmineException;
 import com.taskadapter.redmineapi.RedmineManager;
 import com.taskadapter.redmineapi.bean.Issue;
 import com.taskadapter.redmineapi.bean.Project;
 import com.taskadapter.redmineapi.bean.Version;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import org.apache.commons.lang.ArrayUtils;
 
 public class RedmineMetricsCalculator {
 
@@ -39,9 +36,6 @@ public class RedmineMetricsCalculator {
     List<MetricsResult> result = new ArrayList<MetricsResult>();
     try {
       RedmineManager manager = new RedmineManager(url, apiKey);
-      if(url.startsWith("https://")) {
-        manager.getTransport().addProtocol(new Protocol("https", new SSLProtocolSocketFactory(), 443));
-      }
       
       Project proj = getProject(manager);
 
@@ -97,7 +91,7 @@ public class RedmineMetricsCalculator {
 
   private Project getProject(RedmineManager manager) throws RedmineException {
     for (Project proj : manager.getProjects()) {
-      if (!projectName.equals(proj.getName())) {
+      if (!(projectName.equals(proj.getName()) || projectName.equals(proj.getIdentifier()))) {
         continue;
       }
       return proj;

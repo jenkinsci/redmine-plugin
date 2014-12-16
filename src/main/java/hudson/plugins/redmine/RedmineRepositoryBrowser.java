@@ -23,18 +23,23 @@ import hudson.scm.SubversionChangeLogSet.Path;
  */
 public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 	private final String repositoryId; 
-
+	private final String repositoryOffset;
 	@DataBoundConstructor
-	public RedmineRepositoryBrowser(String repositoryId) {
+	public RedmineRepositoryBrowser(String repositoryId, String repositoryOffset) {
 		this.repositoryId = repositoryId;
+		this.repositoryOffset = repositoryOffset;
 	}
 	
 	/**
-	 * @deprecated use {@link #RedmineRepositoryBrowser(String)}
+	 * @deprecated use {@link #RedmineRepositoryBrowser(String,String)}
 	 */
 	@Deprecated
 	public RedmineRepositoryBrowser() {
-		this(null);
+		this(null,null);
+	}
+	
+	public String getRepositoryOffset() {
+		return repositoryOffset;
 	}
 	
 	public String getRepositoryId() {
@@ -149,11 +154,19 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 			return "/" + this.repositoryId.trim();
 		}
 	}
+	
+	private String getRepositoryOffset(LogEntry logEntry) {
+		if (this.repositoryOffset == null || this.repositoryOffset.trim().length() == 0){
+			return "";
+		} else {
+			return this.repositoryOffset.trim();
+		}
+	}
 
 	private String getFilePath(LogEntry logEntry, String fileFullPath) {
 		AbstractProject<?,?> p = (AbstractProject<?,?>)logEntry.getParent().build.getProject();
 		RedmineProjectProperty rpp = p.getProperty(RedmineProjectProperty.class);
-
+		String rOffset=getRepositoryOffset(logEntry);
 		String filePath = "";
 		if(VersionUtil.isVersionBefore081(rpp.getRedmineWebsite().versionNumber)) {
 			String[] filePaths = fileFullPath.split("/");
@@ -168,6 +181,12 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 			}
 		} else { 
 			filePath = fileFullPath;
+		}
+		
+		if (rOffset.length()>0){
+			if(filePath.startsWith(rOffset)){
+				filePath="/"+filePath.substring(rOffset.length());
+			}
 		}
 		return filePath;
 

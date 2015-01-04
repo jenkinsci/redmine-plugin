@@ -62,50 +62,6 @@ public class RedmineLinkAnnotatorTest extends TestCase {
         assertAnnotatedTextEquals("IssueID #1 #11", 
                                   "<a href='" + REDMINE_URL + "issues/1'>IssueID #1</a> " +
                                   "<a href='" + REDMINE_URL + "issues/11'>#11</a>");
-        assertAnnotatedTextEquals("#1, #11", 
-                "<a href='" + REDMINE_URL + "issues/1'>#1</a>, " +
-                "<a href='" + REDMINE_URL + "issues/11'>#11</a>");
-    	assertAnnotatedTextEquals("refs #13 fixes #12", 
-                "<a href='" + REDMINE_URL + "issues/13'>refs #13</a> " +
-                "<a href='" + REDMINE_URL + "issues/12'>fixes #12</a>");
-        assertAnnotatedTextEquals("#7753 Text", 
-                "<a href='" + REDMINE_URL + "issues/7753'>#7753</a>" +
-                " Text");
-        
-        //examples from http://www.redmine.org/projects/redmine/wiki/RedmineSettings
-        assertAnnotatedTextEquals("This commit refs #1, #2 and fixes #3", 
-                "This commit <a href='" + REDMINE_URL + "issues/1'>refs #1</a>, " +
-                "<a href='" + REDMINE_URL + "issues/2'>#2</a> and " +
-                "<a href='" + REDMINE_URL + "issues/3'>fixes #3</a>");
-        
-        assertAnnotatedTextEquals("This commit refs:#1, #2 and fixes #3", 
-                "This commit <a href='" + REDMINE_URL + "issues/1'>refs:#1</a>, " +
-                "<a href='" + REDMINE_URL + "issues/2'>#2</a> and " +
-                "<a href='" + REDMINE_URL + "issues/3'>fixes #3</a>");
-        
-        
-       assertAnnotatedTextEquals("This commit Refs  #1, #2 and fixes #3", 
-                "This commit <a href='" + REDMINE_URL + "issues/1'>Refs  #1</a>, " +
-                "<a href='" + REDMINE_URL + "issues/2'>#2</a> and " +
-                "<a href='" + REDMINE_URL + "issues/3'>fixes #3</a>");
-
-        assertAnnotatedTextEquals("This commit REFS: #1, #2 and fixes #3", 
-                "This commit <a href='" + REDMINE_URL + "issues/1'>REFS: #1</a>, " +
-                "<a href='" + REDMINE_URL + "issues/2'>#2</a> and " +
-                "<a href='" + REDMINE_URL + "issues/3'>fixes #3</a>");
-        
-        assertAnnotatedTextEquals("This commit Refs:  #1, #2 and fixes: #3", 
-                "This commit <a href='" + REDMINE_URL + "issues/1'>Refs:  #1</a>, " +
-                "<a href='" + REDMINE_URL + "issues/2'>#2</a> and " +
-                "<a href='" + REDMINE_URL + "issues/3'>fixes: #3</a>");
-        
-        //multi-line tests
-        assertAnnotatedTextEquals("refs #1\n comment", 
-                "<a href='" + REDMINE_URL + "issues/1'>refs #1</a>\n comment");
-        
-        assertAnnotatedTextEquals("refs #1\n refs #12 comment", 
-                "<a href='" + REDMINE_URL + "issues/1'>refs #1</a>\n <a href='" + REDMINE_URL + "issues/12'>refs #12</a> comment");
-        
     }
 
     private void assertAnnotatedTextEquals(String originalText, String expectedAnnotatedText) {

@@ -2,7 +2,4 @@
   <f:entry field="repositoryId" title="${%Redmine repository identifier}" help="/plugin/redmine/help-repo.html">
     <f:textbox />
   </f:entry>
-   <f:entry field="repositoryOffset" title="${%Redmine repository offset}" help="/plugin/redmine/help-repo-offset.html">
-    <f:textbox />
-  </f:entry>
 </j:jelly>

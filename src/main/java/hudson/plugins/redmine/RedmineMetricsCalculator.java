@@ -97,10 +97,9 @@ public class RedmineMetricsCalculator {
 
   private Project getProject(RedmineManager manager) throws RedmineException {
     for (Project proj : manager.getProjects()) {
-      if (!projectName.equals(proj.getName())) {
-        continue;
+      if (projectName.equals(proj.getName()) || projectName.equals(proj.getIdentifier())) {
+        return proj;
       }
-      return proj;
     }
     throw new RedmineException("No such project. projectName=" + projectName);
   }

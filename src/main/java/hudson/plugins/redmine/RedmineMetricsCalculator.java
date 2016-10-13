@@ -19,6 +19,7 @@ public class RedmineMetricsCalculator {
 
   private String url;
   private String apiKey;
+  /** actually a project identifier - project names in Redmine can have spaces */
   private String projectName;
   private String versions;
   private String ignoreTicketTracker;
@@ -97,10 +98,9 @@ public class RedmineMetricsCalculator {
 
   private Project getProject(RedmineManager manager) throws RedmineException {
     for (Project proj : manager.getProjects()) {
-      if (!projectName.equals(proj.getName())) {
-        continue;
+      if (projectName.equalsIgnoreCase(proj.getIdentifier()) || projectName.equals(proj.getName())) {
+        return proj;
       }
-      return proj;
     }
     throw new RedmineException("No such project. projectName=" + projectName);
   }

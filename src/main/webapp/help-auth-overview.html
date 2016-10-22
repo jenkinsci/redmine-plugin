@@ -1,5 +1,9 @@
 <div>
-  <p>
-    This is the Redmine User Authentication module.
-  </p>
+  <p>Redmine User Auth module connects to Redmine database to authenticate users.</p>
+  <p>Password entered during Jenkins login is hashed, and compared with hash stored in database in "passField".<br>
+  Hash algorithm depends on Redmine version:<br>
+  <ol>
+    <li>in Redmine 1.2.0 and above, the algorithm is: SHA1(salt + SHA1(clear_text_passwd))</li>
+    <li>in Redmine 1.1.x and lower, there is no salt, so the algorithm is: SHA1(clear_text_passwd)</li>
+  </ol></p>
 </div>

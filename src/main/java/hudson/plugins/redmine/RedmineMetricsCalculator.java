@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.httpclient.protocol.Protocol;
-import org.apache.commons.httpclient.protocol.SSLProtocolSocketFactory;
 import org.apache.commons.lang.ArrayUtils;
 import com.taskadapter.redmineapi.RedmineException;
 import com.taskadapter.redmineapi.RedmineManager;
@@ -40,9 +38,6 @@ public class RedmineMetricsCalculator {
     List<MetricsResult> result = new ArrayList<MetricsResult>();
     try {
       RedmineManager manager = new RedmineManager(url, apiKey);
-      if(url.startsWith("https://")) {
-        manager.getTransport().addProtocol(new Protocol("https", new SSLProtocolSocketFactory(), 443));
-      }
       
       Project proj = getProject(manager);
 

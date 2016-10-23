@@ -21,6 +21,10 @@
             <id>gaooh</id>
             <name>Akiko Asami</name>
         </developer>
+        <developer>
+            <id>ljader</id>
+            <name>Lukasz Jader</name>
+        </developer>
     </developers>
 
     <properties>

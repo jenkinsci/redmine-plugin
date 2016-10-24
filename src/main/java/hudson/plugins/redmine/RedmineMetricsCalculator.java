@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.httpclient.protocol.Protocol;
-import org.apache.commons.httpclient.protocol.SSLProtocolSocketFactory;
 import org.apache.commons.lang.ArrayUtils;
 import com.taskadapter.redmineapi.RedmineException;
 import com.taskadapter.redmineapi.RedmineManager;
@@ -19,6 +17,7 @@ public class RedmineMetricsCalculator {
 
   private String url;
   private String apiKey;
+  /** actually a project identifier - project names in Redmine can have spaces */
   private String projectName;
   private String versions;
   private String ignoreTicketTracker;
@@ -39,9 +38,6 @@ public class RedmineMetricsCalculator {
     List<MetricsResult> result = new ArrayList<MetricsResult>();
     try {
       RedmineManager manager = new RedmineManager(url, apiKey);
-      if(url.startsWith("https://")) {
-        manager.getTransport().addProtocol(new Protocol("https", new SSLProtocolSocketFactory(), 443));
-      }
       
       Project proj = getProject(manager);
 
@@ -96,11 +92,16 @@ public class RedmineMetricsCalculator {
   }
 
   private Project getProject(RedmineManager manager) throws RedmineException {
-    for (Project proj : manager.getProjects()) {
-      if (!projectName.equals(proj.getName())) {
-        continue;
+    List<Project> projects = manager.getProjects();
+    for (Project proj : projects) {
+      if (projectName.equalsIgnoreCase(proj.getIdentifier())) {
+        return proj;
       }
-      return proj;
+    }
+    for (Project proj : projects) {
+      if (projectName.equals(proj.getName())) {
+        return proj;
+      }
     }
     throw new RedmineException("No such project. projectName=" + projectName);
   }

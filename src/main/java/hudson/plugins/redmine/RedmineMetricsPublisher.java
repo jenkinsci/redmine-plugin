@@ -2,6 +2,7 @@ package hudson.plugins.redmine;
 
 import hudson.Extension;
 import hudson.Launcher;
+import hudson.Util;
 import hudson.model.Action;
 import hudson.model.BuildListener;
 import hudson.model.AbstractBuild;
@@ -10,6 +11,7 @@ import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Publisher;
 import hudson.util.FormValidation;
+import hudson.util.Secret;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -22,7 +24,7 @@ import org.kohsuke.stapler.QueryParameter;
 
 public class RedmineMetricsPublisher extends Publisher {
 
-	private String apiKey;
+	private Secret apiKey;
 	private String targetVersion;
 	private String ignoreTicketTracker;
 	private String ignoreTicketStatus;
@@ -31,7 +33,7 @@ public class RedmineMetricsPublisher extends Publisher {
 	@DataBoundConstructor
 	public RedmineMetricsPublisher(String apiKey, String targetVersion, String ignoreTicketTracker,
 			String ignoreTicketStatus) {
-		this.apiKey = apiKey;
+		this.apiKey = Secret.fromString(Util.fixEmptyAndTrim(apiKey));
 		this.targetVersion = targetVersion;
 		this.ignoreTicketTracker = ignoreTicketTracker;
 		this.ignoreTicketStatus = ignoreTicketStatus;
@@ -48,7 +50,7 @@ public class RedmineMetricsPublisher extends Publisher {
         PrintStream logger = listener.getLogger();
 		
 		RedmineMetricsCalculator calculator = new RedmineMetricsCalculator(rpp.getRedmineWebsite().baseUrl,
-				apiKey, rpp.projectName, targetVersion, ignoreTicketTracker,
+				apiKey.getPlainText(), rpp.projectName, targetVersion, ignoreTicketTracker,
 				ignoreTicketStatus);
 		try {
 			List<MetricsResult> metricsList = calculator.calc();
@@ -66,7 +68,7 @@ public class RedmineMetricsPublisher extends Publisher {
 		return BuildStepMonitor.NONE;
 	}
 
-	public String getApiKey() {
+	public Secret getApiKey() {
 		return apiKey;
 	}
 

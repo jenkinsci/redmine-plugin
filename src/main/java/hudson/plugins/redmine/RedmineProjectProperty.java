@@ -33,6 +33,7 @@ import com.google.common.collect.Sets;
  */
 public class RedmineProjectProperty extends JobProperty<AbstractProject<?, ?>> {
 	private final String redmineWebsiteName;
+	/** actually a project identifier - project names in Redmine can have spaces */
 	public final String projectName;
 
 	@DataBoundConstructor

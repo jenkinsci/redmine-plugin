@@ -1,6 +1,7 @@
 package hudson.plugins.redmine;
 
 import hudson.Extension;
+import hudson.Util;
 import hudson.model.Descriptor;
 import hudson.plugins.redmine.dao.*;
 import hudson.plugins.redmine.util.CipherUtil;
@@ -8,6 +9,7 @@ import hudson.plugins.redmine.util.Constants;
 import hudson.security.AbstractPasswordBasedSecurityRealm;
 import hudson.security.GroupDetails;
 import hudson.security.SecurityRealm;
+import hudson.util.Secret;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -47,7 +49,7 @@ public class RedmineSecurityRealm extends AbstractPasswordBasedSecurityRealm {
     private final String dbUserName;
 
     /** Database Password */
-    private final String dbPassword;
+    private final Secret dbPassword;
 
     /** Redmine Version */
     private final String version;
@@ -92,7 +94,7 @@ public class RedmineSecurityRealm extends AbstractPasswordBasedSecurityRealm {
             this.port = port;
 
         this.dbUserName   = dbUserName;
-        this.dbPassword   = dbPassword;
+        this.dbPassword   = Secret.fromString(Util.fixEmptyAndTrim(dbPassword));
         this.version      = StringUtils.isBlank(version)      ? Constants.VERSION_1_2_0           : version;
 
         this.loginTable   = StringUtils.isBlank(loginTable)   ? Constants.DEFAULT_LOGIN_TABLE     : loginTable;
@@ -152,7 +154,7 @@ public class RedmineSecurityRealm extends AbstractPasswordBasedSecurityRealm {
             LOGGER.info("DB Port           : " + this.port);
             LOGGER.info("Database Name     : " + this.databaseName);
 
-            dao.open(this.dbServer, this.port, this.databaseName, this.dbUserName, this.dbPassword);
+            dao.open(this.dbServer, this.port, this.databaseName, this.dbUserName, this.dbPassword.getPlainText());
 
             if (!dao.isTable(this.loginTable))
                 throw new RedmineAuthenticationException("RedmineSecurity: Invalid Login Table");
@@ -200,7 +202,7 @@ public class RedmineSecurityRealm extends AbstractPasswordBasedSecurityRealm {
         try {
             dao = createAuthDao(this.dbms);
 
-            dao.open(this.dbServer, this.port, this.databaseName, this.dbUserName, this.dbPassword);
+            dao.open(this.dbServer, this.port, this.databaseName, this.dbUserName, this.dbPassword.getPlainText());
 
             if (!dao.isTable(this.loginTable))
                 throw new RedmineAuthenticationException("RedmineSecurity: Invalid Login Table");
@@ -301,7 +303,7 @@ public class RedmineSecurityRealm extends AbstractPasswordBasedSecurityRealm {
      *
      * @return
      */
-    public String getDbPassword() {
+    public Secret getDbPassword() {
         return dbPassword;
     }
 

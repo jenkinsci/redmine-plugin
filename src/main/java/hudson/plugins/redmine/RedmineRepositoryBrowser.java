@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import hudson.scm.SubversionChangeLogSet;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import hudson.Extension;
@@ -19,7 +20,6 @@ import hudson.scm.SubversionChangeLogSet.Path;
  * produces redmine links.
  * 
  * @author gaooh
- * @date 2008/10/26
  */
 public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 	private final String repositoryId; 
@@ -174,9 +174,13 @@ public class RedmineRepositoryBrowser extends SubversionRepositoryBrowser {
 	}
 	
 	private boolean isVersionBefore090(LogEntry logEntry) {
-		AbstractProject<?,?> p = (AbstractProject<?,?>)logEntry.getParent().build.getProject();
+		SubversionChangeLogSet parent = logEntry.getParent();
+		if (parent == null || parent.build == null) {
+			return false;
+		}
+		AbstractProject<?, ?> p = parent.build.getProject();
 		RedmineProjectProperty rpp = p.getProperty(RedmineProjectProperty.class);
-		return VersionUtil.isVersionBefore090(rpp.getRedmineWebsite().versionNumber);
+		return rpp != null && VersionUtil.isVersionBefore090(rpp.getRedmineWebsite().versionNumber);
 	}
 
 

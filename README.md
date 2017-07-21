@@ -1,8 +1,6 @@
 Redmine plugin
 ==================
 
-[![Build Status](https://buildhive.cloudbees.com/job/jenkinsci/job/redmine-plugin/badge/icon)](https://buildhive.cloudbees.com/job/jenkinsci/job/redmine-plugin/)
-
 What's this?
 ------------
 

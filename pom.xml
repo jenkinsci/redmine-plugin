@@ -10,7 +10,7 @@
 
     <artifactId>redmine</artifactId>
     <packaging>hpi</packaging>
-    <version>0.21</version>
+    <version>0.22-SNAPSHOT</version>
 
     <name>Jenkins Redmine plugin</name>
     <description>This plugin integrates Redmine into Jenkins</description>
@@ -54,7 +54,7 @@
         <connection>scm:git:git://github.com/jenkinsci/redmine-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:jenkinsci/redmine-plugin.git</developerConnection>
         <url>https://github.com/jenkinsci/redmine-plugin</url>
-      <tag>redmine-0.21</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <dependencies>

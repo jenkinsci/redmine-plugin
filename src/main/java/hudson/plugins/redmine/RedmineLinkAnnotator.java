@@ -7,6 +7,7 @@ import hudson.model.AbstractBuild;
 import hudson.scm.ChangeLogAnnotator;
 import hudson.scm.ChangeLogSet.Entry;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
@@ -47,18 +48,30 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
         private final String href;
         
         LinkMarkup(String pattern, String href) {
-        	pattern = NUM_PATTERN.matcher(pattern).replaceAll("([\\\\d|,| |&|#]+)"); // \\\\d becomes \\d when in the expanded text.
+        	pattern = NUM_PATTERN.matcher(pattern).replaceAll("([\\\\d|,| |&|#]+(?<!\\\\s))"); // \\\\d becomes \\d when in the expanded text.
         	pattern = ANYWORD_PATTERN.matcher(pattern).replaceAll("((?:\\\\w|[._-])+)");
             this.pattern = Pattern.compile(pattern);
             this.href = href;
         }
 
         void process(MarkupText text, String url) {
-        	
         	for(SubText st : text.findTokens(pattern)) {
-        		String[] message = st.getText().split(" ", 2);
-        		
-        		if (message.length > 1) {
+        		String[] message;
+        		int splitOffset=1;
+        		if (st.getText().trim().startsWith("#")) //to support #10, #11 or #10 text
+        		{
+        			message=new String[]{"",st.getText().substring(1)};	
+        		}
+        		else{
+        			message = st.getText().split("[: ]+", 2);	
+        			Pattern pattern = Pattern.compile("[: ]+");
+        		    Matcher matcher = pattern.matcher(st.getText());
+        		    // Get Index of First occurence
+        		    if(matcher.find()){
+        		    	splitOffset=matcher.end()-matcher.start();
+        		    }
+        		}
+        		if (message.length>1) {
         			String[] nums = message[1].split(",|&| ");
         			String splitValue = ",";
         			if(message[1].indexOf("&") != -1) {
@@ -69,12 +82,11 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
         				splitValue = " ";
         			}
         			
+        			int startpos = 0;
+    				int endpos = message[0].length() + nums[0].length() + splitOffset;
+    				nums[0] = nums[0].replace("#", "");
+    				st.addMarkup(startpos, endpos, getIssuesUrl(url, nums[0]), "</a>");
         			if(nums.length > 1) {
-                		int startpos = 0;
-        				int endpos = message[0].length() + nums[0].length() + 1;
-        				nums[0] = nums[0].replace("#", "");
-        				st.addMarkup(startpos, endpos, getIssuesUrl(url, nums[0]), "</a>");
-        				
         				startpos = endpos + splitValue.length();
         				endpos = startpos;
         			
@@ -93,8 +105,6 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
         					startpos = endpos + splitValue.length();
         					
         				}
-        			} else {
-        				st.surroundWith("<a href='"+url+href+"'>","</a>");
         			}
         		} else {
         			st.surroundWith("<a href='"+url+href+"'>","</a>");
@@ -116,7 +126,7 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
 
     static final LinkMarkup[] MARKUPS = new LinkMarkup[] {
     	new LinkMarkup(
-            "(?:#|refs |references |IssueID |fixes |closes )#?NUM",
+            "(?i)(?:#|(?:refs|references|IssueID|fixes|closes)[: ]+#?)NUM",
             "issues/$1"),
         new LinkMarkup(
             "((?:[A-Z][a-z]+){2,})|wiki:ANYWORD",
@@ -124,7 +134,7 @@ public class RedmineLinkAnnotator extends ChangeLogAnnotator {
     };
     static final LinkMarkup[] MARKUPS_OLD = new LinkMarkup[] {
     	new LinkMarkup(
-            "(?:#|refs |references |IssueID |fixes |closes )#?NUM",
+    		"(?i)(?:#|(?:refs|references|IssueID|fixes|closes)[: ]+#?)NUM",
             "issues/show/$1"),
         new LinkMarkup(
             "((?:[A-Z][a-z]+){2,})|wiki:ANYWORD",
